@@ -8,6 +8,7 @@ This then constructs/uploads an image diff for analysis.
 
 <img width="500px" src="https://user-images.githubusercontent.com/4060187/41942163-72c8c20a-796c-11e8-9149-c295341864d3.png" alt="Cypress Image Snapshot Diff"/>
 
+Boom! Turns out you probably can't delete that intern's CSS from 6 months ago that somehow made its way to prod. :see_no_evil:
 
 ## Installation
 
