@@ -2,7 +2,7 @@
 
 # Cypress Image Snapshot
 
-Cypress Image Snapshot binds [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot)'s image diffing logic to [Cypress.io](https://cypress.io) commands.
+Cypress Image Snapshot binds [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot)'s image diffing logic to [Cypress.io](https://cypress.io) commands. The goal is to catch visual regressions during integration tests.
 
 ## Installation
 
