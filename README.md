@@ -1,4 +1,4 @@
-![app-should-visit-the-app-diff](https://user-images.githubusercontent.com/4060187/41941848-4a931f8e-796b-11e8-848e-8a6c85cd26d0.png)
+![Cypress Image Snapshot Diff](https://user-images.githubusercontent.com/4060187/41942163-72c8c20a-796c-11e8-9149-c295341864d3.png)
 
 # Cypress Image Snapshot
 
