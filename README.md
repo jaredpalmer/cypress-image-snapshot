@@ -1,14 +1,16 @@
-# cypress-image-snapshot
+# Cypress Image Snapshot
 
-cypress-image-snapshot binds [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot)'s image diffing logic to Cypress commands.
+Cypress Image Snapshot binds [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot)'s image diffing logic to [Cypress.io](https://cypress.io) commands.
 
 ## Installation
+
+Install from npm
 
 ```bash
 npm install cypress-image-snapshot
 ```
 
-And then in `<rootDir>/cypress/plugins/index.js` add:
+then add the following in your project's `<rootDir>/cypress/plugins/index.js`:
 
 ```js
 const { addMatchImageSnapshotPlugin } = require('cypress-image-snapshot/plugin');
@@ -18,7 +20,7 @@ module.exports = on => {
 };
 ```
 
-And in `<rootDir>/cypress/support/commands.js` add:
+and in `<rootDir>/cypress/support/commands.js` add:
 
 ```js
 import { addMatchImageSnapshotCommand } from 'cypress-image-snapshot/command';
