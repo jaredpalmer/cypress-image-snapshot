@@ -1,3 +1,5 @@
+![app-should-visit-the-app-diff](https://user-images.githubusercontent.com/4060187/41941848-4a931f8e-796b-11e8-848e-8a6c85cd26d0.png)
+
 # Cypress Image Snapshot
 
 Cypress Image Snapshot binds [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot)'s image diffing logic to [Cypress.io](https://cypress.io) commands.
