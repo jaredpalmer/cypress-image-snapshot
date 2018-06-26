@@ -1,8 +1,13 @@
-![Cypress Image Snapshot Diff](https://user-images.githubusercontent.com/4060187/41942163-72c8c20a-796c-11e8-9149-c295341864d3.png)
 
 # Cypress Image Snapshot
 
 Cypress Image Snapshot binds [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot)'s image diffing logic to [Cypress.io](https://cypress.io) commands. The goal is to catch visual regressions during integration tests.
+
+<img width="500px" src="https://user-images.githubusercontent.com/4060187/41942389-5a6705ae-796d-11e8-8003-fadbf7ccf43d.gif" alt="Cypress Image Snapshot in action"/>
+
+<br>
+
+<img width="500px" src="https://user-images.githubusercontent.com/4060187/41942163-72c8c20a-796c-11e8-9149-c295341864d3.png" alt="Cypress Image Snapshot Diff"/>
 
 ## Installation
 
@@ -77,6 +82,8 @@ describe('Login', () => {
   });
 });
 ```
+
+
 
 ## Options
 
