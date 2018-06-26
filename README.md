@@ -1,3 +1,4 @@
+![Cypress Image Snapshot Diff](https://user-images.githubusercontent.com/4060187/41942163-72c8c20a-796c-11e8-9149-c295341864d3.png)
 
 # Cypress Image Snapshot
 
@@ -5,9 +6,6 @@ Cypress Image Snapshot binds [jest-image-snapshot](https://github.com/americanex
 
 <img width="500px" src="https://user-images.githubusercontent.com/4060187/41942389-5a6705ae-796d-11e8-8003-fadbf7ccf43d.gif" alt="Cypress Image Snapshot in action"/>
 
-<br>
-
-<img width="500px" src="https://user-images.githubusercontent.com/4060187/41942163-72c8c20a-796c-11e8-9149-c295341864d3.png" alt="Cypress Image Snapshot Diff"/>
 
 ## Installation
 
@@ -113,6 +111,3 @@ The workflow of `cy.matchImageSnapshot()` when running Cypress is:
 3.  If there is a resulting diff, save it to `<rootDir>/cypress/snapshots/__diff_output__` and `<rootDir>/cypress/screenshots` (so that the diff is uploaded to Cypress' dashboard).
 4.  If the diff is intended, run Cypress again with `--config updateSnapshots=true` to update the snapshots.
 
-### Example Diff Output
-
-![Cypress Image Snapshot Diff](https://user-images.githubusercontent.com/4060187/41942163-72c8c20a-796c-11e8-9149-c295341864d3.png)
