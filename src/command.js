@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2018-present The Palmer Group
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import kebabCase from 'lodash.kebabcase';
 
 const screenshotsFolder = Cypress.config('screenshotsFolder');
@@ -31,8 +38,7 @@ export function matchImageSnapshotCommand(defaultOptions) {
         const differencePercentage = diffRatio * 100;
         if (!pass && !added && !updated) {
           throw new Error(
-            `Expected image to match or be a close match to snapshot but was ${differencePercentage}% different from snapshot (${diffPixelCount} differing pixels).\n` +
-              `See diff for details: ${diffOutputPath}`
+            `Screenshot was ${differencePercentage}% different from saved snapshot with ${diffPixelCount} different pixels.\n  See diff for details: ${diffOutputPath}`
           );
         }
       }
