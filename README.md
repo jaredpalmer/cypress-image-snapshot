@@ -1,8 +1,9 @@
-![Cypress Image Snapshot Diff](https://user-images.githubusercontent.com/4060187/41942163-72c8c20a-796c-11e8-9149-c295341864d3.png)
-
 # Cypress Image Snapshot
 
 Cypress Image Snapshot binds [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot)'s image diffing logic to [Cypress.io](https://cypress.io) commands.
+
+![Cypress Image Snapshot Diff](https://user-images.githubusercontent.com/4060187/41942163-72c8c20a-796c-11e8-9149-c295341864d3.png)
+
 
 ## Installation
 
