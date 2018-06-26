@@ -8,6 +8,7 @@
   "scripts": {
     "prebuild": "rimraf *.js",
     "build": "babel src --out-dir .",
+    "test": "echo \"No tests\"",
     "prepublish": "npm run build",
     "precommit": "lint-staged"
   },
