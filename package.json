@@ -5,6 +5,9 @@
   "repository": "https://github.com/palmerhq/cypress-image-snapshot",
   "author": "Jack Cross <jack@palmer.net>",
   "license": "MIT",
+  "files": [
+    "*.js"
+  ],
   "scripts": {
     "prebuild": "rimraf *.js",
     "build": "babel src --out-dir .",
