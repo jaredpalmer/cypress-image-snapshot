@@ -17,7 +17,11 @@ export function matchImageSnapshotPlugin({
   screenshotsFolder,
   fileServerFolder,
   updateSnapshots,
-  options: { failureThreshold = 0, failureThresholdType = 'pixel', ...options },
+  options: {
+    failureThreshold = 0,
+    failureThresholdType = 'pixel',
+    ...options
+  } = {},
 }) {
   const snapshotPath = path.join(screenshotsFolder, `${fileName}.png`);
   const receivedImageBuffer = fs.readFileSync(snapshotPath);
@@ -38,5 +42,5 @@ export function matchImageSnapshotPlugin({
 }
 
 export function addMatchImageSnapshotPlugin(on) {
-  on('task', { matchImageSnapshotPlugin });
+  on('task', { matchImageSnapshot: matchImageSnapshotPlugin });
 }
