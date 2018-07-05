@@ -51,11 +51,12 @@ export function matchImageSnapshotCommand(defaultOptions) {
 }
 
 export function addMatchImageSnapshotCommand(
-  name = 'matchImageSnapshot',
-  options
+  maybeName = 'matchImageSnapshot',
+  maybeOptions
 ) {
-  const defaultOptions = typeof name === 'string' ? options : name;
-  Cypress.Commands.add(name, matchImageSnapshotCommand(defaultOptions), {
+  const options = typeof maybeName === 'string' ? maybeOptions : maybeName;
+  const name = typeof maybeName === 'string' ? maybeName : 'matchImageSnapshot';
+  Cypress.Commands.add(name, matchImageSnapshotCommand(options), {
     prevSubject: 'optional',
   });
 }
