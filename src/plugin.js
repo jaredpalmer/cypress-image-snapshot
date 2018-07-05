@@ -10,14 +10,16 @@ import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
 
 let snapshotOptions = {};
 let snapshotResults = {};
+let snapshotRunning = false;
 
-export function matchImageSnapshotOptions(options) {
+export function matchImageSnapshotOptions(options = {}) {
   snapshotOptions = options;
+  snapshotRunning = true;
   return null;
 }
 
 export function matchImageSnapshotResults() {
-  snapshotOptions = {};
+  snapshotRunning = false;
   return snapshotResults;
 }
 
@@ -25,6 +27,10 @@ export function matchImageSnapshotPlugin({
   path: screenshotsPath,
   name: snapshotIdentifier,
 }) {
+  if (!snapshotRunning) {
+    return;
+  }
+
   const {
     screenshotsFolder,
     fileServerFolder,
