@@ -6,7 +6,6 @@
  */
 
 import kebabCase from 'lodash.kebabcase';
-import { TASK } from './plugin';
 
 const screenshotsFolder = Cypress.config('screenshotsFolder');
 const fileServerFolder = Cypress.config('fileServerFolder');
@@ -24,7 +23,7 @@ export function matchImageSnapshotCommand(defaultOptions) {
 
     const { fileNameTransform = defaultFileNameTransform } = options;
     const fileName = fileNameTransform(name, this.test);
-    cy.task(TASK.OPTIONS, {
+    cy.task('Matching image snapshot', {
       screenshotsFolder,
       fileServerFolder,
       updateSnapshots,
@@ -35,7 +34,7 @@ export function matchImageSnapshotCommand(defaultOptions) {
     target.screenshot(fileName, options);
 
     return cy
-      .task(TASK.RESULTS)
+      .task('Recording snapshot results')
       .then(
         ({
           pass,

@@ -8,11 +8,6 @@
 import fs from 'fs';
 import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
 
-export const TASK = {
-  OPTIONS: 'Matching image snapshot',
-  RESULTS: 'Recording snapshot results',
-};
-
 let snapshotOptions = {};
 let snapshotResults = {};
 
@@ -70,8 +65,8 @@ export function matchImageSnapshotPlugin({
 
 export function addMatchImageSnapshotPlugin(on) {
   on('task', {
-    [TASK.OPTIONS]: matchImageSnapshotOptions,
-    [TASK.RESULTS]: matchImageSnapshotResults,
+    'Matching image snapshot': matchImageSnapshotOptions,
+    'Recording snapshot results': matchImageSnapshotResults,
   });
   on('after:screenshot', matchImageSnapshotPlugin);
 }

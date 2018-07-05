@@ -75,7 +75,7 @@ describe('command', () => {
 
     expect(
       boundMatchImageSnapshot(subject, commandOptions)
-    ).resolves.toThrowErrorMatchingSnapshot();
+    ).rejects.toThrowErrorMatchingSnapshot();
   });
 
   it('should add command', () => {
