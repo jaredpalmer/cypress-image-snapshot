@@ -6,16 +6,17 @@
  */
 
 import kebabCase from 'lodash.kebabcase';
+import { TASK } from './plugin';
 
 const screenshotsFolder = Cypress.config('screenshotsFolder');
 const fileServerFolder = Cypress.config('fileServerFolder');
 const updateSnapshots = Cypress.config('updateSnapshots') || false;
 
 const defaultFileNameTransform = (name = '', test) =>
-  kebabCase(`${test.parent.title}-${test.title}-${name}`);
+  kebabCase(`${test.title}-${name}`);
 
 export function matchImageSnapshotCommand(defaultOptions) {
-  return async function matchImageSnapshot(subject, name, commandOptions) {
+  return function matchImageSnapshot(subject, name, commandOptions) {
     const options = {
       ...defaultOptions,
       ...((typeof name === 'string' ? commandOptions : name) || {}),
@@ -23,30 +24,35 @@ export function matchImageSnapshotCommand(defaultOptions) {
 
     const { fileNameTransform = defaultFileNameTransform } = options;
     const fileName = fileNameTransform(name, this.test);
-    const target = subject ? subject : cy;
-    target.screenshot(fileName, options);
-
-    const {
-      pass,
-      added,
-      updated,
-      diffRatio,
-      diffPixelCount,
-      diffOutputPath,
-    } = await cy.task('matchImageSnapshot', {
-      fileName,
+    cy.task(TASK.OPTIONS, {
       screenshotsFolder,
       fileServerFolder,
       updateSnapshots,
       options,
     });
 
-    const differencePercentage = diffRatio * 100;
-    if (!pass && !added && !updated) {
-      throw new Error(
-        `Screenshot was ${differencePercentage}% different from saved snapshot with ${diffPixelCount} different pixels.\n  See diff for details: ${diffOutputPath}`
+    const target = subject ? subject : cy;
+    target.screenshot(fileName, options);
+
+    return cy
+      .task(TASK.RESULTS)
+      .then(
+        ({
+          pass,
+          added,
+          updated,
+          diffRatio,
+          diffPixelCount,
+          diffOutputPath,
+        }) => {
+          if (!pass && !added && !updated) {
+            const differencePercentage = diffRatio * 100;
+            throw new Error(
+              `Screenshot was ${differencePercentage}% different from saved snapshot with ${diffPixelCount} different pixels.\n  See diff for details: ${diffOutputPath}`
+            );
+          }
+        }
       );
-    }
   };
 }
 

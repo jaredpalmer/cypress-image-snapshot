@@ -5,42 +5,73 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const fs = require('fs');
-const path = require('path');
-const childProcess = require('child_process');
-const {
-  diffImageToSnapshot,
-} = require('jest-image-snapshot/src/diff-snapshot');
+import fs from 'fs';
+import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
+
+export const TASK = {
+  OPTIONS: 'Matching image snapshot',
+  RESULTS: 'Recording snapshot results',
+};
+
+let snapshotOptions = {};
+let snapshotResults = {};
+
+export function matchImageSnapshotOptions(options) {
+  snapshotOptions = options;
+  return null;
+}
+
+export function matchImageSnapshotResults() {
+  snapshotOptions = {};
+  return snapshotResults;
+}
 
 export function matchImageSnapshotPlugin({
-  fileName,
-  screenshotsFolder,
-  fileServerFolder,
-  updateSnapshots,
-  options: {
-    failureThreshold = 0,
-    failureThresholdType = 'pixel',
-    ...options
-  } = {},
+  path: screenshotsPath,
+  name: snapshotIdentifier,
 }) {
-  const snapshotPath = path.join(screenshotsFolder, `${fileName}.png`);
-  const receivedImageBuffer = fs.readFileSync(snapshotPath);
+  const {
+    screenshotsFolder,
+    fileServerFolder,
+    updateSnapshots,
+    options: {
+      failureThreshold = 0,
+      failureThresholdType = 'pixel',
+      ...options
+    } = {},
+  } = snapshotOptions;
 
-  const result = diffImageToSnapshot({
-    snapshotsDir: path.join(fileServerFolder, 'cypress', 'snapshots'),
-    updateSnapshot: updateSnapshots,
+  const receivedImageBuffer = fs.readFileSync(screenshotsPath);
+  const snapshotsPath = screenshotsPath.replace('screenshots', 'snapshots');
+  const snapshotsDir = snapshotsPath.replace(`/${snapshotIdentifier}.png`, '');
+
+  snapshotResults = diffImageToSnapshot({
+    snapshotsDir,
     receivedImageBuffer,
-    snapshotIdentifier: fileName,
+    snapshotIdentifier,
     failureThreshold,
     failureThresholdType,
+    updateSnapshot: updateSnapshots,
     ...options,
   });
 
-  childProcess.spawnSync('cp', [result.diffOutputPath, snapshotPath]);
+  const { pass, added, updated, diffOutputPath } = snapshotResults;
 
-  return result;
+  if (!pass && !added && !updated) {
+    return {
+      path: diffOutputPath,
+    };
+  }
+
+  return {
+    path: snapshotsPath,
+  };
 }
 
 export function addMatchImageSnapshotPlugin(on) {
-  on('task', { matchImageSnapshot: matchImageSnapshotPlugin });
+  on('task', {
+    [TASK.OPTIONS]: matchImageSnapshotOptions,
+    [TASK.RESULTS]: matchImageSnapshotResults,
+  });
+  on('after:screenshot', matchImageSnapshotPlugin);
 }
