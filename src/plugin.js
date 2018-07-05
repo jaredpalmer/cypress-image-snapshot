@@ -43,8 +43,12 @@ export function matchImageSnapshotPlugin({
   } = snapshotOptions;
 
   const receivedImageBuffer = fs.readFileSync(screenshotsPath);
-  const snapshotsPath = screenshotsPath.replace('screenshots', 'snapshots');
-  const snapshotsDir = snapshotsPath.replace(`/${snapshotIdentifier}.png`, '');
+  const screenshotName = `${snapshotIdentifier}.png`;
+  const snapshotName = `${snapshotIdentifier}-snap.png`;
+  const snapshotsPath = screenshotsPath
+    .replace('screenshots', 'snapshots')
+    .replace(screenshotName, snapshotName);
+  const snapshotsDir = snapshotsPath.replace(snapshotName, '');
 
   snapshotResults = diffImageToSnapshot({
     snapshotsDir,
