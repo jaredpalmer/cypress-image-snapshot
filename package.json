@@ -1,6 +1,6 @@
 {
   "name": "cypress-image-snapshot",
-  "version": "0.1.6",
+  "version": "0.2.0-2",
   "description": "Cypress bindings for jest-image-snapshot.",
   "repository": "https://github.com/palmerhq/cypress-image-snapshot",
   "author": "Jack Cross <jack@palmer.net>",
@@ -30,7 +30,7 @@
     "rimraf": "^2.6.2"
   },
   "peerDependencies": {
-    "cypress": ">= 3.0.0 < 3.0.2"
+    "cypress": "^3.0.2"
   },
   "lint-staged": {
     "linters": {

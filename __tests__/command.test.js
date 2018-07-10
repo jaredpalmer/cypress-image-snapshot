@@ -32,15 +32,14 @@ const commandOptions = {
 };
 
 describe('command', () => {
-  it('should pass options through', async () => {
+  it('should pass options through', () => {
     global.cy = {
       task: jest.fn().mockResolvedValue({ pass: true }),
     };
 
-    await boundMatchImageSnapshot(subject, commandOptions);
+    boundMatchImageSnapshot(subject, commandOptions);
 
-    expect(cy.task).toHaveBeenCalledWith('matchImageSnapshot', {
-      fileName: 'snap',
+    expect(cy.task).toHaveBeenCalledWith('Matching image snapshot', {
       screenshotsFolder: 'cheese',
       fileServerFolder: 'cheese',
       updateSnapshots: 'cheese',
