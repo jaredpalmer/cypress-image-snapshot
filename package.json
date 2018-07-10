@@ -30,7 +30,7 @@
     "rimraf": "^2.6.2"
   },
   "peerDependencies": {
-    "cypress": "^3.0.0"
+    "cypress": ">= 3.0.0 < 3.0.2"
   },
   "lint-staged": {
     "linters": {
