@@ -7,9 +7,15 @@
 
 global.Cypress = {
   config: () => 'cheese',
+  Commands: {
+    add: jest.fn(),
+  },
 };
 
-const { matchImageSnapshotCommand } = require('../src/command');
+const {
+  matchImageSnapshotCommand,
+  addMatchImageSnapshotCommand,
+} = require('../src/command');
 
 const defaultOptions = {
   failureThreshold: 0,
@@ -71,5 +77,35 @@ describe('command', () => {
     expect(
       boundMatchImageSnapshot(subject, commandOptions)
     ).rejects.toThrowErrorMatchingSnapshot();
+  });
+
+  it('should add command', () => {
+    Cypress.Commands.add.mockReset();
+    addMatchImageSnapshotCommand();
+    expect(Cypress.Commands.add).toHaveBeenCalledWith(
+      'matchImageSnapshot',
+      expect.any(Function),
+      { prevSubject: 'optional' }
+    );
+  });
+
+  it('should add command with custom name', () => {
+    Cypress.Commands.add.mockReset();
+    addMatchImageSnapshotCommand('sayCheese');
+    expect(Cypress.Commands.add).toHaveBeenCalledWith(
+      'sayCheese',
+      expect.any(Function),
+      { prevSubject: 'optional' }
+    );
+  });
+
+  it('should add command with options', () => {
+    Cypress.Commands.add.mockReset();
+    addMatchImageSnapshotCommand({ failureThreshold: 0.1 });
+    expect(Cypress.Commands.add).toHaveBeenCalledWith(
+      'matchImageSnapshot',
+      expect.any(Function),
+      { prevSubject: 'optional' }
+    );
   });
 });
