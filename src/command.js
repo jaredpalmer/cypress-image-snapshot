@@ -9,7 +9,7 @@ import kebabCase from 'lodash.kebabcase';
 
 const screenshotsFolder = Cypress.config('screenshotsFolder');
 const fileServerFolder = Cypress.config('fileServerFolder');
-const updateSnapshots = Cypress.config('updateSnapshots') || false;
+const updateSnapshots = Cypress.env('updateSnapshots') || false;
 
 const defaultFileNameTransform = (name = '', test) =>
   kebabCase(`${test.title}-${name}`);

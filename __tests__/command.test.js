@@ -7,6 +7,7 @@
 
 global.Cypress = {
   config: () => 'cheese',
+  env: () => false,
   Commands: {
     add: jest.fn(),
   },
@@ -42,7 +43,7 @@ describe('command', () => {
     expect(cy.task).toHaveBeenCalledWith('Matching image snapshot', {
       screenshotsFolder: 'cheese',
       fileServerFolder: 'cheese',
-      updateSnapshots: 'cheese',
+      updateSnapshots: false,
       options: {
         failureThreshold: 10,
         failureThresholdType: 'pixel',

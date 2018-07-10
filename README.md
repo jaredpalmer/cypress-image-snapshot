@@ -110,4 +110,4 @@ The workflow of `cy.matchImageSnapshot()` when running Cypress is:
 1.  Take a screenshot with `cy.screenshot()` named according to the current test.
 2.  Check if a saved snapshot exists in `<rootDir>/cypress/snapshots` and if so diff against that snapshot.
 3.  If there is a resulting diff, save it to `<rootDir>/cypress/snapshots/__diff_output__`.
-4.  If the diff is intended, run Cypress again with `--config updateSnapshots=true` to update the snapshots.
+4.  If the diff is intended, run Cypress again with `--env updateSnapshots=true` to update the snapshots.
