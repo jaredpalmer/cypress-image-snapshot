@@ -1996,9 +1996,9 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
-cypress-image-snapshot@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/cypress-image-snapshot/-/cypress-image-snapshot-1.0.1.tgz#30c7794821d561b80618bb214bbf8e3b21c5dd18"
+cypress-image-snapshot@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/cypress-image-snapshot/-/cypress-image-snapshot-1.0.2.tgz#2c6355f52575e787176886a63bc644ed6c5c4e78"
   dependencies:
     jest-image-snapshot "2.4.3"
     lodash.kebabcase "^4.1.1"
