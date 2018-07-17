@@ -13,6 +13,10 @@ global.Cypress = {
   },
 };
 
+global.cy = {
+  wrap: subject => subject,
+};
+
 const {
   matchImageSnapshotCommand,
   addMatchImageSnapshotCommand,
@@ -34,9 +38,7 @@ const commandOptions = {
 
 describe('command', () => {
   it('should pass options through', () => {
-    global.cy = {
-      task: jest.fn().mockResolvedValue({ pass: true }),
-    };
+    global.cy.task = jest.fn().mockResolvedValue({ pass: true });
 
     boundMatchImageSnapshot(subject, commandOptions);
 
@@ -53,9 +55,7 @@ describe('command', () => {
   });
 
   it('should pass', () => {
-    global.cy = {
-      task: jest.fn().mockResolvedValue({ pass: true }),
-    };
+    global.cy.task = jest.fn().mockResolvedValue({ pass: true });
 
     expect(
       boundMatchImageSnapshot(subject, commandOptions)
@@ -63,16 +63,14 @@ describe('command', () => {
   });
 
   it('should fail', () => {
-    global.cy = {
-      task: jest.fn().mockResolvedValue({
-        pass: false,
-        added: false,
-        updated: false,
-        diffRatio: 0.1,
-        diffPixelCount: 10,
-        diffOutputPath: 'cheese',
-      }),
-    };
+    global.cy.task = jest.fn().mockResolvedValue({
+      pass: false,
+      added: false,
+      updated: false,
+      diffRatio: 0.1,
+      diffPixelCount: 10,
+      diffOutputPath: 'cheese',
+    });
 
     expect(
       boundMatchImageSnapshot(subject, commandOptions)
@@ -84,8 +82,8 @@ describe('command', () => {
     addMatchImageSnapshotCommand();
     expect(Cypress.Commands.add).toHaveBeenCalledWith(
       'matchImageSnapshot',
-      expect.any(Function),
-      { prevSubject: 'optional' }
+      { prevSubject: ['optional', 'element', 'window', 'document'] },
+      expect.any(Function)
     );
   });
 
@@ -94,8 +92,8 @@ describe('command', () => {
     addMatchImageSnapshotCommand('sayCheese');
     expect(Cypress.Commands.add).toHaveBeenCalledWith(
       'sayCheese',
-      expect.any(Function),
-      { prevSubject: 'optional' }
+      { prevSubject: ['optional', 'element', 'window', 'document'] },
+      expect.any(Function)
     );
   });
 
@@ -104,8 +102,8 @@ describe('command', () => {
     addMatchImageSnapshotCommand({ failureThreshold: 0.1 });
     expect(Cypress.Commands.add).toHaveBeenCalledWith(
       'matchImageSnapshot',
-      expect.any(Function),
-      { prevSubject: 'optional' }
+      { prevSubject: ['optional', 'element', 'window', 'document'] },
+      expect.any(Function)
     );
   });
 });
