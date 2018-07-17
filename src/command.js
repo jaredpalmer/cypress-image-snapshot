@@ -30,7 +30,7 @@ export function matchImageSnapshotCommand(defaultOptions) {
       options,
     });
 
-    const target = subject ? subject : cy;
+    const target = subject ? cy.wrap(subject) : cy;
     target.screenshot(fileName, options);
 
     return cy
@@ -61,7 +61,11 @@ export function addMatchImageSnapshotCommand(
 ) {
   const options = typeof maybeName === 'string' ? maybeOptions : maybeName;
   const name = typeof maybeName === 'string' ? maybeName : 'matchImageSnapshot';
-  Cypress.Commands.add(name, matchImageSnapshotCommand(options), {
-    prevSubject: 'optional',
-  });
+  Cypress.Commands.add(
+    name,
+    {
+      prevSubject: ['optional', 'element', 'window', 'document'],
+    },
+    matchImageSnapshotCommand(options)
+  );
 }
