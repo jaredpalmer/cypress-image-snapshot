@@ -5,13 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs';
+import fs from 'fs-extra';
 import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
-import kebabCase from 'lodash.kebabcase';
 
 let snapshotOptions = {};
 let snapshotResults = {};
 let snapshotRunning = false;
+const kebabSnap = '-snap.png';
+const dotSnap = '.snap.png';
+const dotDiff = '.diff.png';
 
 export function matchImageSnapshotOptions(options = {}) {
   snapshotOptions = options;
@@ -40,12 +42,21 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
 
   const receivedImageBuffer = fs.readFileSync(screenshotPath);
   const screenshotFileName = screenshotPath.slice(
-    screenshotPath.lastIndexOf('/')
+    screenshotPath.lastIndexOf('/') + 1
   );
   const screenshotDir = screenshotPath.replace(screenshotFileName, '');
-  const snapshotIdentifier = kebabCase(screenshotFileName.replace('.png', ''));
+  const snapshotIdentifier = screenshotFileName.replace('.png', '');
   const snapshotsDir = screenshotDir.replace('screenshots', 'snapshots');
-  const snapshotPath = `${snapshotsDir}/${snapshotIdentifier}-snap.png`;
+
+  const snapshotKebabPath = `${snapshotsDir}/${snapshotIdentifier}${kebabSnap}`;
+  const snapshotDotPath = `${snapshotsDir}/${snapshotIdentifier}${dotSnap}`;
+
+  const diffDir = `${snapshotsDir}/__diff_output__`;
+  const diffDotPath = `${diffDir}/${snapshotIdentifier}${dotDiff}`;
+
+  if (fs.pathExistsSync(snapshotDotPath)) {
+    fs.copySync(snapshotDotPath, snapshotKebabPath);
+  }
 
   snapshotResults = diffImageToSnapshot({
     snapshotsDir,
@@ -60,13 +71,20 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   const { pass, added, updated, diffOutputPath } = snapshotResults;
 
   if (!pass && !added && !updated) {
+    fs.copySync(diffOutputPath, diffDotPath);
+    fs.removeSync(diffOutputPath);
+    fs.removeSync(snapshotKebabPath);
+
     return {
       path: diffOutputPath,
     };
   }
 
+  fs.copySync(snapshotKebabPath, snapshotDotPath);
+  fs.removeSync(snapshotKebabPath);
+
   return {
-    path: snapshotPath,
+    path: snapshotDotPath,
   };
 }
 
