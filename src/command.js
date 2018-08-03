@@ -5,36 +5,28 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import kebabCase from 'lodash.kebabcase';
+import { MATCH, RECORD } from './constants';
 
-const screenshotsFolder = Cypress.config('screenshotsFolder');
-const fileServerFolder = Cypress.config('fileServerFolder');
 const updateSnapshots = Cypress.env('updateSnapshots') || false;
 
-const defaultFileNameTransform = (name = '', test) =>
-  kebabCase(`${test.title}-${name}`);
-
 export function matchImageSnapshotCommand(defaultOptions) {
-  return function matchImageSnapshot(subject, name, commandOptions) {
+  return function matchImageSnapshot(subject, maybeName, commandOptions) {
     const options = {
       ...defaultOptions,
-      ...((typeof name === 'string' ? commandOptions : name) || {}),
+      ...((typeof maybeName === 'string' ? commandOptions : maybeName) || {}),
     };
 
-    const { fileNameTransform = defaultFileNameTransform } = options;
-    const fileName = fileNameTransform(name, this.test);
-    cy.task('Matching image snapshot', {
-      screenshotsFolder,
-      fileServerFolder,
+    cy.task(MATCH, {
       updateSnapshots,
       options,
     });
 
+    const name = typeof maybeName === 'string' ? maybeName : undefined;
     const target = subject ? cy.wrap(subject) : cy;
-    target.screenshot(fileName, options);
+    target.screenshot(name, options);
 
     return cy
-      .task('Recording snapshot results')
+      .task(RECORD)
       .then(
         ({
           pass,

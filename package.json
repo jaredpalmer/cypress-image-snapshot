@@ -12,6 +12,7 @@
     "prebuild": "rimraf *.js",
     "build": "babel src --out-dir .",
     "test": "jest",
+    "lint": "eslint src",
     "prepublish": "npm run build",
     "precommit": "lint-staged"
   },
@@ -23,6 +24,11 @@
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
+    "eslint": "^5.2.0",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-cypress": "^2.0.1",
+    "eslint-plugin-import": "^2.13.0",
     "husky": "^0.14.3",
     "jest": "^23.2.0",
     "lint-staged": "^7.2.0",
@@ -48,6 +54,18 @@
     "semi": true,
     "singleQuote": true,
     "trailingComma": "es5"
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb-base",
+      "prettier"
+    ],
+    "plugins": [
+      "cypress"
+    ],
+    "env": {
+      "cypress/globals": true
+    }
   },
   "babel": {
     "presets": [

@@ -7,6 +7,7 @@
 
 import fs from 'fs';
 import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
+import kebabCase from 'lodash.kebabcase';
 
 let snapshotOptions = {};
 let snapshotResults = {};
@@ -23,17 +24,12 @@ export function matchImageSnapshotResults() {
   return snapshotResults;
 }
 
-export function matchImageSnapshotPlugin({
-  path: screenshotsPath,
-  name: snapshotIdentifier,
-}) {
+export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   if (!snapshotRunning) {
-    return;
+    return null;
   }
 
   const {
-    screenshotsFolder,
-    fileServerFolder,
     updateSnapshots,
     options: {
       failureThreshold = 0,
@@ -42,13 +38,14 @@ export function matchImageSnapshotPlugin({
     } = {},
   } = snapshotOptions;
 
-  const receivedImageBuffer = fs.readFileSync(screenshotsPath);
-  const screenshotName = `${snapshotIdentifier}.png`;
-  const snapshotName = `${snapshotIdentifier}-snap.png`;
-  const snapshotsPath = screenshotsPath
-    .replace('screenshots', 'snapshots')
-    .replace(screenshotName, snapshotName);
-  const snapshotsDir = snapshotsPath.replace(snapshotName, '');
+  const receivedImageBuffer = fs.readFileSync(screenshotPath);
+  const screenshotFileName = screenshotPath.slice(
+    screenshotPath.lastIndexOf('/')
+  );
+  const screenshotDir = screenshotPath.replace(screenshotFileName, '');
+  const snapshotIdentifier = kebabCase(screenshotFileName.replace('.png', ''));
+  const snapshotsDir = screenshotDir.replace('screenshots', 'snapshots');
+  const snapshotPath = `${snapshotsDir}/${snapshotIdentifier}-snap.png`;
 
   snapshotResults = diffImageToSnapshot({
     snapshotsDir,
@@ -69,7 +66,7 @@ export function matchImageSnapshotPlugin({
   }
 
   return {
-    path: snapshotsPath,
+    path: snapshotPath,
   };
 }
 
