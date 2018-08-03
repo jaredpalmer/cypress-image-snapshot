@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import childProcess from 'child_process';
 import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
 import {
   matchImageSnapshotPlugin,
@@ -17,7 +16,12 @@ jest.mock('jest-image-snapshot/src/diff-snapshot', () => ({
     .fn()
     .mockReturnValue({ diffOutputPath: '/path/to/diff' }),
 }));
-jest.mock('fs', () => ({ readFileSync: () => 'cheese' }));
+jest.mock('fs-extra', () => ({
+  readFileSync: () => 'cheese',
+  pathExistsSync: () => false,
+  copySync: () => null,
+  removeSync: () => null,
+}));
 
 describe('plugin', () => {
   it('should pass options through', () => {
@@ -30,7 +34,7 @@ describe('plugin', () => {
     const result = matchImageSnapshotPlugin({ path: '/path/to/cheese' });
     expect(result).toEqual({ path: '/path/to/diff' });
     expect(diffImageToSnapshot).toHaveBeenCalledWith({
-      snapshotsDir: '/path/to',
+      snapshotsDir: '/path/to/',
       updateSnapshot: true,
       receivedImageBuffer: 'cheese',
       snapshotIdentifier: 'cheese',
