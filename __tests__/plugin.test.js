@@ -22,20 +22,18 @@ jest.mock('fs', () => ({ readFileSync: () => 'cheese' }));
 describe('plugin', () => {
   it('should pass options through', () => {
     const options = {
-      screenshotsFolder: '/screenshots',
-      fileServerFolder: '/fileserver',
       updateSnapshots: true,
     };
 
     matchImageSnapshotOptions(options);
 
-    const result = matchImageSnapshotPlugin({ path: 'cheese', name: 'snap' });
+    const result = matchImageSnapshotPlugin({ path: '/path/to/cheese' });
     expect(result).toEqual({ path: '/path/to/diff' });
     expect(diffImageToSnapshot).toHaveBeenCalledWith({
-      snapshotsDir: 'cheese',
+      snapshotsDir: '/path/to',
       updateSnapshot: true,
       receivedImageBuffer: 'cheese',
-      snapshotIdentifier: 'snap',
+      snapshotIdentifier: 'cheese',
       failureThreshold: 0,
       failureThresholdType: 'pixel',
     });

@@ -18,7 +18,7 @@
     "examples": "concurrently \"npm run start\" \"npm run cypress:open\""
   },
   "devDependencies": {
-    "cypress": "^3.0.2",
+    "cypress": "^3.0.3",
     "cypress-image-snapshot": "^1.0.2"
   }
 }

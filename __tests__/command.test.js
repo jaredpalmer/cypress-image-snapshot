@@ -6,7 +6,6 @@
  */
 
 global.Cypress = {
-  config: () => 'cheese',
   env: () => false,
   Commands: {
     add: jest.fn(),
@@ -25,7 +24,6 @@ const {
 const defaultOptions = {
   failureThreshold: 0,
   failureThresholdType: 'pixel',
-  fileNameTransform: () => 'snap',
 };
 
 const boundMatchImageSnapshot = matchImageSnapshotCommand(defaultOptions).bind({
@@ -43,13 +41,10 @@ describe('command', () => {
     boundMatchImageSnapshot(subject, commandOptions);
 
     expect(cy.task).toHaveBeenCalledWith('Matching image snapshot', {
-      screenshotsFolder: 'cheese',
-      fileServerFolder: 'cheese',
       updateSnapshots: false,
       options: {
         failureThreshold: 10,
         failureThresholdType: 'pixel',
-        fileNameTransform: expect.any(Function),
       },
     });
   });
