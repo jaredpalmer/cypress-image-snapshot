@@ -8,6 +8,8 @@
 import fs from 'fs-extra';
 import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
 
+const path = require('path');
+
 let snapshotOptions = {};
 let snapshotResults = {};
 let snapshotRunning = false;
@@ -42,17 +44,23 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
 
   const receivedImageBuffer = fs.readFileSync(screenshotPath);
   const screenshotFileName = screenshotPath.slice(
-    screenshotPath.lastIndexOf('/') + 1
+    screenshotPath.lastIndexOf(path.sep) + 1
   );
   const screenshotDir = screenshotPath.replace(screenshotFileName, '');
   const snapshotIdentifier = screenshotFileName.replace('.png', '');
   const snapshotsDir = screenshotDir.replace('screenshots', 'snapshots');
 
-  const snapshotKebabPath = `${snapshotsDir}/${snapshotIdentifier}${kebabSnap}`;
-  const snapshotDotPath = `${snapshotsDir}/${snapshotIdentifier}${dotSnap}`;
+  const snapshotKebabPath = path.join(
+    snapshotsDir,
+    `${snapshotIdentifier}${kebabSnap}`
+  );
+  const snapshotDotPath = path.join(
+    snapshotsDir,
+    `${snapshotIdentifier}${dotSnap}`
+  );
 
-  const diffDir = `${snapshotsDir}/__diff_output__`;
-  const diffDotPath = `${diffDir}/${snapshotIdentifier}${dotDiff}`;
+  const diffDir = path.join(snapshotsDir, '__diff_output__');
+  const diffDotPath = path.join(diffDir, `${snapshotIdentifier}${dotDiff}`);
 
   if (fs.pathExistsSync(snapshotDotPath)) {
     fs.copySync(snapshotDotPath, snapshotKebabPath);
