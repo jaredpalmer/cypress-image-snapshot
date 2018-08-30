@@ -25,21 +25,28 @@ jest.mock('fs-extra', () => ({
 
 describe('plugin', () => {
   it('should pass options through', () => {
+    const originalCwd = process.cwd;
+    process.cwd = () => '';
+
     const options = {
       updateSnapshots: true,
     };
 
     matchImageSnapshotOptions(options);
 
-    const result = matchImageSnapshotPlugin({ path: '/path/to/cheese' });
+    const result = matchImageSnapshotPlugin({
+      path: '/screenshots/path/to/cheese',
+    });
     expect(result).toEqual({ path: '/path/to/diff' });
     expect(diffImageToSnapshot).toHaveBeenCalledWith({
-      snapshotsDir: '/path/to/',
+      snapshotsDir: '/cypress/snapshots/path/to/',
       updateSnapshot: true,
       receivedImageBuffer: 'cheese',
       snapshotIdentifier: 'cheese',
       failureThreshold: 0,
       failureThresholdType: 'pixel',
     });
+
+    process.cwd = originalCwd;
   });
 });

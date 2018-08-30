@@ -5,10 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import path from 'path';
 import fs from 'fs-extra';
 import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
-
-const path = require('path');
 
 let snapshotOptions = {};
 let snapshotResults = {};
@@ -38,6 +37,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     options: {
       failureThreshold = 0,
       failureThresholdType = 'pixel',
+      customSnapshotsDir = '/cypress/snapshots',
       ...options
     } = {},
   } = snapshotOptions;
@@ -48,7 +48,11 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   );
   const screenshotDir = screenshotPath.replace(screenshotFileName, '');
   const snapshotIdentifier = screenshotFileName.replace('.png', '');
-  const snapshotsDir = screenshotDir.replace('screenshots', 'snapshots');
+  const snapshotsDir = path.join(
+    process.cwd(),
+    customSnapshotsDir,
+    /screenshots(.*)/.exec(screenshotDir)[1]
+  );
 
   const snapshotKebabPath = path.join(
     snapshotsDir,
