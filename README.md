@@ -15,7 +15,7 @@ Boom! Turns out you probably can't delete that intern's CSS from 6 months ago th
 Install from npm
 
 ```bash
-npm install -D cypress-image-snapshot
+npm install --save-dev cypress-image-snapshot
 ```
 
 then add the following in your project's `<rootDir>/cypress/plugins/index.js`:
