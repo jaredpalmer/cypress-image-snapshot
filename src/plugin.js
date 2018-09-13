@@ -88,7 +88,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     fs.removeSync(snapshotKebabPath);
 
     return {
-      path: diffOutputPath,
+      path: diffDotPath,
     };
   }
 
