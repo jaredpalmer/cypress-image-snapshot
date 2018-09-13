@@ -37,7 +37,9 @@ describe('plugin', () => {
     const result = matchImageSnapshotPlugin({
       path: '/screenshots/path/to/cheese',
     });
-    expect(result).toEqual({ path: '/path/to/diff' });
+    expect(result).toEqual({
+      path: '/cypress/snapshots/path/to/__diff_output__/cheese.diff.png',
+    });
     expect(diffImageToSnapshot).toHaveBeenCalledWith({
       snapshotsDir: '/cypress/snapshots/path/to/',
       updateSnapshot: true,
