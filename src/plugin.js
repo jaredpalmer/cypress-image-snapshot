@@ -8,6 +8,7 @@
 import path from 'path';
 import fs from 'fs-extra';
 import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
+import { MATCH, RECORD } from './constants';
 
 let snapshotOptions = {};
 let snapshotResults = {};
@@ -38,6 +39,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
       failureThreshold = 0,
       failureThresholdType = 'pixel',
       customSnapshotsDir = '/cypress/snapshots',
+      customDiffDir,
       ...options
     } = {},
   } = snapshotOptions;
@@ -47,11 +49,12 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     screenshotPath.lastIndexOf(path.sep) + 1
   );
   const screenshotDir = screenshotPath.replace(screenshotFileName, '');
+  const relativePath = screenshotDir.match(/screenshots(.*)/)[1];
   const snapshotIdentifier = screenshotFileName.replace('.png', '');
   const snapshotsDir = path.join(
     process.cwd(),
     customSnapshotsDir,
-    /screenshots(.*)/.exec(screenshotDir)[1]
+    relativePath
   );
 
   const snapshotKebabPath = path.join(
@@ -63,7 +66,9 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     `${snapshotIdentifier}${dotSnap}`
   );
 
-  const diffDir = path.join(snapshotsDir, '__diff_output__');
+  const diffDir = customDiffDir
+    ? path.join(process.cwd(), customDiffDir, relativePath)
+    : path.join(snapshotsDir, '__diff_output__');
   const diffDotPath = path.join(diffDir, `${snapshotIdentifier}${dotDiff}`);
 
   if (fs.pathExistsSync(snapshotDotPath)) {
@@ -86,6 +91,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     fs.copySync(diffOutputPath, diffDotPath);
     fs.removeSync(diffOutputPath);
     fs.removeSync(snapshotKebabPath);
+    snapshotResults.diffOutputPath = diffDotPath;
 
     return {
       path: diffDotPath,
@@ -94,6 +100,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
 
   fs.copySync(snapshotKebabPath, snapshotDotPath);
   fs.removeSync(snapshotKebabPath);
+  snapshotResults.diffOutputPath = snapshotDotPath;
 
   return {
     path: snapshotDotPath,
@@ -102,8 +109,8 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
 
 export function addMatchImageSnapshotPlugin(on) {
   on('task', {
-    'Matching image snapshot': matchImageSnapshotOptions,
-    'Recording snapshot results': matchImageSnapshotResults,
+    [MATCH]: matchImageSnapshotOptions,
+    [RECORD]: matchImageSnapshotResults,
   });
   on('after:screenshot', matchImageSnapshotPlugin);
 }
