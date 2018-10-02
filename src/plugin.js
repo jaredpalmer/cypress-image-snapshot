@@ -34,11 +34,12 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   }
 
   const {
+    screenshotsFolder,
     updateSnapshots,
     options: {
       failureThreshold = 0,
       failureThresholdType = 'pixel',
-      customSnapshotsDir = '/cypress/snapshots',
+      customSnapshotsDir,
       customDiffDir,
       ...options
     } = {},
@@ -51,11 +52,9 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   const screenshotDir = screenshotPath.replace(screenshotFileName, '');
   const relativePath = screenshotDir.match(/screenshots(.*)/)[1];
   const snapshotIdentifier = screenshotFileName.replace('.png', '');
-  const snapshotsDir = path.join(
-    process.cwd(),
-    customSnapshotsDir,
-    relativePath
-  );
+  const snapshotsDir = customSnapshotsDir
+    ? path.join(process.cwd(), customSnapshotsDir, relativePath)
+    : path.join(screenshotsFolder, '..', 'snapshots', relativePath);
 
   const snapshotKebabPath = path.join(
     snapshotsDir,

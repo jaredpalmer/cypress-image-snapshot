@@ -7,6 +7,7 @@
 
 global.Cypress = {
   env: () => false,
+  config: () => '/cypress/screenshots',
   Commands: {
     add: jest.fn(),
   },
@@ -41,6 +42,7 @@ describe('command', () => {
     boundMatchImageSnapshot(subject, commandOptions);
 
     expect(cy.task).toHaveBeenCalledWith('Matching image snapshot', {
+      screenshotsFolder: '/cypress/screenshots',
       updateSnapshots: false,
       options: {
         failureThreshold: 10,
