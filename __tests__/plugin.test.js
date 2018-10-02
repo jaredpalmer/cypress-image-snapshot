@@ -29,6 +29,7 @@ describe('plugin', () => {
     process.cwd = () => '';
 
     const options = {
+      screenshotsFolder: '/cypress/screenshots',
       updateSnapshots: true,
     };
 

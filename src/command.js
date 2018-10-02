@@ -7,6 +7,7 @@
 
 import { MATCH, RECORD } from './constants';
 
+const screenshotsFolder = Cypress.config('screenshotsFolder');
 const updateSnapshots = Cypress.env('updateSnapshots') || false;
 
 export function matchImageSnapshotCommand(defaultOptions) {
@@ -17,6 +18,7 @@ export function matchImageSnapshotCommand(defaultOptions) {
     };
 
     cy.task(MATCH, {
+      screenshotsFolder,
       updateSnapshots,
       options,
     });
