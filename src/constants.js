@@ -1,2 +1,1 @@
-export const MATCH = 'Matching image snapshot';
-export const RECORD = 'Recording snapshot results';
+export const COMPARE = 'Compare Image Snapshot';

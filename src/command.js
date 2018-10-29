@@ -1,65 +1,28 @@
-/**
- * Copyright (c) 2018-present The Palmer Group
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+import { COMPARE } from "./constants";
 
-import { MATCH, RECORD } from './constants';
+const matchImageSnapshotCommand = (subject, maybeName, maybeOptions) => {
+    // Check if first parameter is a string, if so use it as the snapshot name, if not assume it are the options.
+  const name = typeof maybeName === 'string' ? maybeName : undefined;
+  const options = (name) ? maybeOptions : maybeName
+  const target = subject ? cy.wrap(subject) : cy;
 
-const screenshotsFolder = Cypress.config('screenshotsFolder');
-const updateSnapshots = Cypress.env('updateSnapshots') || false;
+  target.screenshot(name, options);
 
-export function matchImageSnapshotCommand(defaultOptions) {
-  return function matchImageSnapshot(subject, maybeName, commandOptions) {
-    const options = {
-      ...defaultOptions,
-      ...((typeof maybeName === 'string' ? commandOptions : maybeName) || {}),
-    };
+  return cy.task(COMPARE, name, options)
+};
 
-    cy.task(MATCH, {
-      screenshotsFolder,
-      updateSnapshots,
-      options,
-    });
-
-    const name = typeof maybeName === 'string' ? maybeName : undefined;
-    const target = subject ? cy.wrap(subject) : cy;
-    target.screenshot(name, options);
-
-    return cy
-      .task(RECORD)
-      .then(
-        ({
-          pass,
-          added,
-          updated,
-          diffRatio,
-          diffPixelCount,
-          diffOutputPath,
-        }) => {
-          if (!pass && !added && !updated) {
-            const differencePercentage = diffRatio * 100;
-            throw new Error(
-              `Screenshot was ${differencePercentage}% different from saved snapshot with ${diffPixelCount} different pixels.\n  See diff for details: ${diffOutputPath}`
-            );
-          }
-        }
-      );
-  };
-}
-
-export function addMatchImageSnapshotCommand(
-  maybeName = 'matchImageSnapshot',
-  maybeOptions
-) {
-  const options = typeof maybeName === 'string' ? maybeOptions : maybeName;
-  const name = typeof maybeName === 'string' ? maybeName : 'matchImageSnapshot';
+const addMatchImageSnapshotCommand = (
+  name = 'matchImageSnapshot'
+) => {
   Cypress.Commands.add(
     name,
     {
       prevSubject: ['optional', 'element', 'window', 'document'],
     },
-    matchImageSnapshotCommand(options)
+    matchImageSnapshotCommand
   );
+}
+
+export {
+    addMatchImageSnapshotCommand
 }
