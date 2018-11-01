@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "fs-extra": "^7.0.0",
-    "jest-image-snapshot": "2.4.3"
+    "pixelmatch": "^4.0.2",
+    "pngjs": "^3.3.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
