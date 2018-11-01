@@ -7,10 +7,10 @@ import { createHash } from 'crypto';
 const compare = (snapshot, latest, output, update, threshold = 0.01) => new Promise((resolve, reject) => {
     const latestImg = PNG.sync.read(fs.readFileSync(latest));
 
-    if(update || !fs.existsSync(snapshot)) {
+    if (update || !fs.existsSync(snapshot)) {
         fsExtra.ensureFileSync(snapshot);
         fs.writeFileSync(snapshot, PNG.sync.write(latestImg, { filterType: 4 }))
-        resolve({diff: 0, total: 0, msg: "Snapshot did not exist we created it for you!"})
+        resolve({ diff: 0, total: 0, msg: "Snapshot did not exist we created it for you!" })
     }
 
     const snapshotImg = PNG.sync.read(fs.readFileSync(snapshot));
@@ -18,8 +18,8 @@ const compare = (snapshot, latest, output, update, threshold = 0.01) => new Prom
     const snapshotHash = createHash('sha1').update(snapshotImg.data).digest('base64');
     const latestHash = createHash('sha1').update(latestImg.data).digest('base64');
 
-    if(snapshotHash === latestHash) {
-        resolve({diff: 0, total: 0, msg: "File hash matched no need for pixel by pixel compare!"});
+    if (snapshotHash === latestHash) {
+        resolve({ diff: 0, total: 0, msg: "File hash matched no need for pixel by pixel compare!" });
     }
 
     if(snapshotImg.width !== latestImg.width || snapshotImg.height !== latestImg.height) {
@@ -30,12 +30,12 @@ const compare = (snapshot, latest, output, update, threshold = 0.01) => new Prom
 
     const diffPixels = pixelmatch(snapshotImg.data, latestImg.data, diffImg.data, snapshotImg.width, snapshotImg.height, {threshold});
 
-    if(diffPixels > 0) {
+    if (diffPixels > 0) {
         fsExtra.ensureFileSync(output);
         fs.writeFileSync(output, PNG.sync.write(diffImg, { filterType: 4 }))
     }
 
-    resolve({diff: diffPixels, total: snapshotImg.width * snapshotImg.height});
+    resolve({ diff: diffPixels, total: snapshotImg.width * snapshotImg.height });
 });
 
 export default compare;

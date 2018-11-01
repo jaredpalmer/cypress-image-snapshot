@@ -1,6 +1,4 @@
 import path from 'path';
-import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
-import fs from 'fs-extra';
 import { COMPARE } from './constants';
 import compare from './compare';
 
@@ -35,37 +33,39 @@ const matchImageSnapshotPlugin = (name, options, config) =>
       screenshotPath.replace('.png', options.dotSnap)
     );
 
-    compare(snapPath, screenshotDetails.path, diffPath, config.env.updateSnapshots || false).then(({diff, total, msg}) => {
-        if(msg) {
+    compare(snapPath, screenshotDetails.path, diffPath, config.env.updateSnapshots || false).then(({ diff, total, msg }) => {
+        options.onDiffFinished.call(snapPath, screenshotDetails.path, diffPath);
+
+        if (msg) {
           resolve(msg);
         }
 
-        if(options.thresholdType === 'pixel') {
+        if (options.thresholdType === 'pixel') {
             if(diff > options.threshold) {
-                reject(new Error(`Image comparison failed, the change of ${diff} is higher then the allowed ${options.threshold} pixels.`))
+                reject(new Error(`Image comparison failed, the change of ${diff} is higher than the allowed ${options.threshold} pixels.`))
             }
-        } else if(options.threshold === 'percentage') {
+        } else if (options.threshold === 'percentage') {
             const percentage = ((total - diff) / total) * 100;
 
             if(percentage > options.threshold) {
-                reject(new Error(`Image comparison failed, the change of ${diff} is higher then the allowed ${options.threshold} percentage.`))
+                reject(new Error(`Image comparison failed, the change of ${diff} is higher than the allowed ${options.threshold} percentage.`))
             }
         }
 
-        resolve("Screenshot matched")
+        resolve('Screenshot matched')
     }).catch((reason) => reject(reason));
   });
 
 const addMatchImageSnapshotPlugin = (on, config, pluginOptions) => {
   const pluginDefaults = {
-    kebabSnap: '-snap.png',
     dotSnap: '.snap.png',
     dotDiff: '.diff.png',
     snapshotFolder: undefined,
     diffFolder: undefined,
     skipCompare: () => false,
     threshold: 0,
-    thresholdType: 'pixel'
+    thresholdType: 'pixel',
+    onDiffFinished: () => {}
   };
   on('task', {
     [COMPARE]: (name, options) =>
