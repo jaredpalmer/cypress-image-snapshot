@@ -1,6 +1,11 @@
 # Cypress Image Snapshot
 
-Cypress Image Snapshot binds [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot)'s image diffing logic to [Cypress.io](https://cypress.io) commands. **The goal is to catch visual regressions during integration tests.** Here's what it looks like when tests run with the Cypress GUI.
+Cypress Image Snapshot binds [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot)'s image diffing logic to [Cypress.io](https://cypress.io) commands. **The goal is to catch visual regressions during integration tests.**
+
+<details>
+<summary>See it in action!</summary>
+
+Here's what it looks like when tests run with the Cypress GUI.
 
 <img width="500px" src="https://user-images.githubusercontent.com/4060187/41942389-5a6705ae-796d-11e8-8003-fadbf7ccf43d.gif" alt="Cypress Image Snapshot in action"/>
 
@@ -9,6 +14,8 @@ This then constructs/uploads an image diff for analysis.
 <img width="500px" src="https://user-images.githubusercontent.com/4060187/41942163-72c8c20a-796c-11e8-9149-c295341864d3.png" alt="Cypress Image Snapshot Diff"/>
 
 Boom! Turns out you probably can't delete that intern's CSS from 6 months ago that somehow made its way to prod. :see_no_evil:
+
+</details>
 
 ## Installation
 
