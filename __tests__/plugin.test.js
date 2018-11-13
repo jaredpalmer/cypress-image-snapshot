@@ -43,6 +43,7 @@ describe('plugin', () => {
     });
     expect(diffImageToSnapshot).toHaveBeenCalledWith({
       snapshotsDir: '/cypress/snapshots/path/to/',
+      diffDir: '/cypress/snapshots/path/to/__diff_output__',
       updateSnapshot: true,
       receivedImageBuffer: 'cheese',
       snapshotIdentifier: 'cheese',
