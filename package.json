@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "fs-extra": "^7.0.0",
-    "jest-image-snapshot": "2.4.3"
+    "jest-image-snapshot": "2.7.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
