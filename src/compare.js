@@ -4,7 +4,7 @@ import {PNG} from 'pngjs';
 import pixelmatch from 'pixelmatch';
 import { createHash } from 'crypto';
 
-const compare = (snapshot, latest, output, update, threshold = 0.01) => new Promise((resolve, reject) => {
+const compare = (snapshot, latest, output, update, callback, threshold = 0.01) => new Promise((resolve, reject) => {
     const latestImg = PNG.sync.read(fs.readFileSync(latest));
 
     if (update || !fs.existsSync(snapshot)) {
@@ -23,6 +23,11 @@ const compare = (snapshot, latest, output, update, threshold = 0.01) => new Prom
     }
 
     if(snapshotImg.width !== latestImg.width || snapshotImg.height !== latestImg.height) {
+        // Check if the DPI setting of the screen is different to provide better error handling.
+        if((snapshotImg.width % latestImg.width === 0 && snapshotImg.height % latestImg.height === 0) || (latestImg.width % snapshotImg.width  === 0 && latestImg.height % snapshotImg.height === 0)) {
+            reject(new Error(`Size of the images compare are not equal, this is likely to DPI settings please ensure you run the test cases on a screen with the same DPI settings.`))
+        }
+
         reject(new Error(`Size of the images to compare need to be equal, snapshot ${snapshotImg.width}x${snapshotImg.height} vs latest ${latestImg.width}x${latestImg.height}.`))
     };
 
@@ -31,8 +36,23 @@ const compare = (snapshot, latest, output, update, threshold = 0.01) => new Prom
     const diffPixels = pixelmatch(snapshotImg.data, latestImg.data, diffImg.data, snapshotImg.width, snapshotImg.height, {threshold});
 
     if (diffPixels > 0) {
-        fsExtra.ensureFileSync(output);
-        fs.writeFileSync(output, PNG.sync.write(diffImg, { filterType: 4 }))
+        if(typeof callback === 'function') {
+            callback.call({latestImg, snapshotImg, diffImg, snapshotPath: snapshot, latestPath: latest, diffPath: output, diffPixels, threshold})
+        } else {
+            const { width, height } = snapshotImg;
+
+            const compositeDiffImg = new PNG({
+                width: width * 3,
+                height
+            });
+
+            PNG.bitblt(snapshotImg, compositeDiffImg, 0, 0, width, height, 0, 0);
+            PNG.bitblt(diffImg, compositeDiffImg, 0, 0, width, height, width, 0);
+            PNG.bitblt(latestImg, compositeDiffImg, 0, 0, width, height, width * 2, 0);
+
+            fsExtra.ensureFileSync(output);
+            fs.writeFileSync(output, PNG.sync.write(compositeDiffImg, { filterType: 4 }))
+        }
     }
 
     resolve({ diff: diffPixels, total: snapshotImg.width * snapshotImg.height });

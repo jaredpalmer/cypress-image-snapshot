@@ -17,7 +17,7 @@
     "precommit": "lint-staged"
   },
   "dependencies": {
-    "fs-extra": "^7.0.0",
+    "fs-extra": "^7.0.1",
     "pixelmatch": "^4.0.2",
     "pngjs": "^3.3.3"
   },
