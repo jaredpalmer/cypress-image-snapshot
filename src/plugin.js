@@ -76,6 +76,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
 
   snapshotResults = diffImageToSnapshot({
     snapshotsDir,
+    diffDir,
     receivedImageBuffer,
     snapshotIdentifier,
     failureThreshold,
