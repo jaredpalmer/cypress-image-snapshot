@@ -15,7 +15,7 @@
     "eject": "react-scripts eject",
     "cypress:run": "cypress run",
     "cypress:open": "cypress open",
-    "examples": "concurrently \"npm run start\" \"npm run cypress:open\""
+    "examples": "concurrently \"npm run start\" \"npm run cypress:run\""
   },
   "devDependencies": {
     "cypress": "^3.0.3",
