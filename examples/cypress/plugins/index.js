@@ -2,6 +2,8 @@ const {
   addMatchImageSnapshotPlugin,
 } = require('cypress-image-snapshot/plugin');
 
-module.exports = on => {
-  addMatchImageSnapshotPlugin(on);
+module.exports = (on, config) => {
+  addMatchImageSnapshotPlugin(on, config, {
+    snapshotFolder: 'cypress/snapshots'
+  });
 };

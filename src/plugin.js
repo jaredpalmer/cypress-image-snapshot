@@ -76,7 +76,6 @@ const addMatchImageSnapshotPlugin = (on, config, pluginOptions) => {
       return null;
     },
     [COMPARE_RESULT]: () => {
-      console.log(compareResult)
       if(compareResult.error) {
         throw new Error(compareResult.error)
       }
@@ -87,4 +86,5 @@ const addMatchImageSnapshotPlugin = (on, config, pluginOptions) => {
   on('after:screenshot', details => matchImageSnapshotPlugin(details, config));
 };
 
+export default addMatchImageSnapshotPlugin
 export { addMatchImageSnapshotPlugin };

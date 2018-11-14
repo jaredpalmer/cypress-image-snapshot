@@ -19,6 +19,6 @@
   },
   "devDependencies": {
     "cypress": "^3.0.3",
-    "cypress-image-snapshot": "^1.0.2"
+    "cypress-image-snapshot": "file:../"
   }
 }

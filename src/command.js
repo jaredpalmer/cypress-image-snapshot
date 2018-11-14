@@ -25,6 +25,7 @@ const addMatchImageSnapshotCommand = (
   );
 }
 
+export default addMatchImageSnapshotCommand
 export {
     addMatchImageSnapshotCommand
 }
