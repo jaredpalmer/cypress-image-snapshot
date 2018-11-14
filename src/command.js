@@ -9,6 +9,8 @@ import { MATCH, RECORD } from './constants';
 
 const screenshotsFolder = Cypress.config('screenshotsFolder');
 const updateSnapshots = Cypress.env('updateSnapshots') || false;
+const failOnSnapshotDiff =
+  typeof Cypress.env('failOnSnapshotDiff') === 'undefined';
 
 export function matchImageSnapshotCommand(defaultOptions) {
   return function matchImageSnapshot(subject, maybeName, commandOptions) {
@@ -39,10 +41,14 @@ export function matchImageSnapshotCommand(defaultOptions) {
           diffOutputPath,
         }) => {
           if (!pass && !added && !updated) {
-            const differencePercentage = diffRatio * 100;
-            throw new Error(
-              `Screenshot was ${differencePercentage}% different from saved snapshot with ${diffPixelCount} different pixels.\n  See diff for details: ${diffOutputPath}`
-            );
+            const message = `Screenshot was ${diffRatio *
+              100}% different from saved snapshot with ${diffPixelCount} different pixels.\n  See diff for details: ${diffOutputPath}`;
+
+            if (failOnSnapshotDiff) {
+              throw new Error(message);
+            } else {
+              Cypress.log({ message });
+            }
           }
         }
       );

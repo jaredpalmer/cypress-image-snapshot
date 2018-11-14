@@ -32,8 +32,8 @@ const {
   addMatchImageSnapshotPlugin,
 } = require('cypress-image-snapshot/plugin');
 
-module.exports = on => {
-  addMatchImageSnapshotPlugin(on);
+module.exports = (on, config) => {
+  addMatchImageSnapshotPlugin(on, config);
 };
 ```
 
@@ -49,7 +49,7 @@ addMatchImageSnapshotCommand(options);
 
 ```js
 // addMatchImageSnapshotPlugin
-addMatchImageSnapshotPlugin(on);
+addMatchImageSnapshotPlugin(on, config);
 
 // addMatchImageSnapshotCommand
 addMatchImageSnapshotCommand();
@@ -73,6 +73,8 @@ cy.matchImageSnapshot(name, options);
 
 ## Usage
 
+### In your tests
+
 ```js
 describe('Login', () => {
   it('should be publicly accessible', () => {
@@ -92,6 +94,20 @@ describe('Login', () => {
   });
 });
 ```
+
+### Updating snapshots
+
+Run Cypress with `--env updateSnapshots=true` in order to update the base image files for all of your tests.
+
+### Preventing failures
+
+Run Cypress with `--env failOnSnapshotDiff=false` in order to prevent test failures when an image diff does not pass.
+
+### Reporter
+
+Run Cypress with `--reporter cypress-image-snapshot/reporter` in order to report snapshot diffs in your test results. This can be helpful to use with `--env failOnSnapshotDiff=false` in order to quickly view all failing snapshots and their diffs.
+
+If you using [iTerm2](https://www.iterm2.com/version3.html), the reporter will output any image diffs right in your terminal 😎.
 
 ## Options
 
@@ -120,4 +136,3 @@ The workflow of `cy.matchImageSnapshot()` when running Cypress is:
 1.  Take a screenshot with `cy.screenshot()` named according to the current test.
 2.  Check if a saved snapshot exists in `<rootDir>/cypress/snapshots` and if so diff against that snapshot.
 3.  If there is a resulting diff, save it to `<rootDir>/cypress/snapshots/__diff_output__`.
-4.  If the diff is intended, run Cypress again with `--env updateSnapshots=true` to update the snapshots.

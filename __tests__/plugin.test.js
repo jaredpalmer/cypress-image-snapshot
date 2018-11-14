@@ -33,7 +33,7 @@ describe('plugin', () => {
       updateSnapshots: true,
     };
 
-    matchImageSnapshotOptions(options);
+    matchImageSnapshotOptions()(options);
 
     const result = matchImageSnapshotPlugin({
       path: '/screenshots/path/to/cheese',

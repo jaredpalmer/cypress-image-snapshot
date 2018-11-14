@@ -7,6 +7,7 @@
 
 global.Cypress = {
   env: () => false,
+  log: () => null,
   config: () => '/cypress/screenshots',
   Commands: {
     add: jest.fn(),
