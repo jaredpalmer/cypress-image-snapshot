@@ -11,21 +11,51 @@ import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
 import { MATCH, RECORD } from './constants';
 
 let snapshotOptions = {};
-let snapshotResults = {};
+let snapshotResult = {};
 let snapshotRunning = false;
 const kebabSnap = '-snap.png';
 const dotSnap = '.snap.png';
 const dotDiff = '.diff.png';
 
-export function matchImageSnapshotOptions(options = {}) {
-  snapshotOptions = options;
-  snapshotRunning = true;
-  return null;
+export const snapshotResults = [];
+
+export const cachePath = path.join(
+  process.cwd(),
+  'cypress',
+  '.snapshot-report'
+);
+
+export function matchImageSnapshotOptions() {
+  return (options = {}) => {
+    snapshotOptions = options;
+    snapshotRunning = true;
+    return null;
+  };
 }
 
-export function matchImageSnapshotResults() {
-  snapshotRunning = false;
-  return snapshotResults;
+export function matchImageSnapshotResult(config) {
+  return () => {
+    snapshotRunning = false;
+
+    snapshotResults.push('yo');
+
+    if (
+      !snapshotResult.pass &&
+      config &&
+      config.reporter &&
+      config.reporter.includes('cypress-image-snapshot')
+    ) {
+      // @todo is there a less expensive way to share state between test and reporter?
+      let cache = [];
+      if (fs.existsSync(cachePath)) {
+        cache = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+      }
+      cache.push(snapshotResult);
+      fs.writeFileSync(cachePath, JSON.stringify(cache), 'utf8');
+    }
+
+    return snapshotResult;
+  };
 }
 
 export function matchImageSnapshotPlugin({ path: screenshotPath }) {
@@ -74,7 +104,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     fs.copySync(snapshotDotPath, snapshotKebabPath);
   }
 
-  snapshotResults = diffImageToSnapshot({
+  snapshotResult = diffImageToSnapshot({
     snapshotsDir,
     diffDir,
     receivedImageBuffer,
@@ -85,13 +115,13 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     ...options,
   });
 
-  const { pass, added, updated, diffOutputPath } = snapshotResults;
+  const { pass, added, updated, diffOutputPath } = snapshotResult;
 
   if (!pass && !added && !updated) {
     fs.copySync(diffOutputPath, diffDotPath);
     fs.removeSync(diffOutputPath);
     fs.removeSync(snapshotKebabPath);
-    snapshotResults.diffOutputPath = diffDotPath;
+    snapshotResult.diffOutputPath = diffDotPath;
 
     return {
       path: diffDotPath,
@@ -100,17 +130,17 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
 
   fs.copySync(snapshotKebabPath, snapshotDotPath);
   fs.removeSync(snapshotKebabPath);
-  snapshotResults.diffOutputPath = snapshotDotPath;
+  snapshotResult.diffOutputPath = snapshotDotPath;
 
   return {
     path: snapshotDotPath,
   };
 }
 
-export function addMatchImageSnapshotPlugin(on) {
+export function addMatchImageSnapshotPlugin(on, config) {
   on('task', {
-    [MATCH]: matchImageSnapshotOptions,
-    [RECORD]: matchImageSnapshotResults,
+    [MATCH]: matchImageSnapshotOptions(config),
+    [RECORD]: matchImageSnapshotResult(config),
   });
   on('after:screenshot', matchImageSnapshotPlugin);
 }
