@@ -35,8 +35,12 @@ export function matchImageSnapshotResult(config) {
   return () => {
     snapshotRunning = false;
 
+    const { pass, added, updated } = snapshotResult;
+
     if (
-      !snapshotResult.pass &&
+      !pass &&
+      !added &&
+      !updated &&
       config &&
       config.reporter &&
       config.reporter.includes('cypress-image-snapshot')
