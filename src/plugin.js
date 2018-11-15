@@ -17,8 +17,6 @@ const kebabSnap = '-snap.png';
 const dotSnap = '.snap.png';
 const dotDiff = '.diff.png';
 
-export const snapshotResults = [];
-
 export const cachePath = path.join(
   process.cwd(),
   'cypress',
@@ -36,8 +34,6 @@ export function matchImageSnapshotOptions() {
 export function matchImageSnapshotResult(config) {
   return () => {
     snapshotRunning = false;
-
-    snapshotResults.push('yo');
 
     if (
       !snapshotResult.pass &&
