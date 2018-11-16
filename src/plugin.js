@@ -76,6 +76,8 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   } = snapshotOptions;
 
   const receivedImageBuffer = fs.readFileSync(screenshotPath);
+  fs.removeSync(screenshotPath);
+
   const screenshotFileName = screenshotPath.slice(
     screenshotPath.lastIndexOf(path.sep) + 1
   );
