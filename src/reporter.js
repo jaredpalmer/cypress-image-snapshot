@@ -22,9 +22,9 @@ function reporter(runner) {
         );
         termImage(diffOutputPath, { fallback });
       });
-
-      fs.removeSync(cachePath);
     }
+
+    fs.removeSync(cachePath);
   });
 }
 
