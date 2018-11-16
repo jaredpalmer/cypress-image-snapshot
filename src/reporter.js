@@ -8,6 +8,8 @@ function fallback() {
 }
 
 function reporter(runner) {
+  fs.writeFileSync(cachePath, JSON.stringify([]), 'utf8');
+
   runner.on('end', () => {
     if (fs.existsSync(cachePath)) {
       console.log(chalk.red(`\n  (${chalk.underline.bold('Snapshot Diffs')})`));
