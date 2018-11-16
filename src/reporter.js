@@ -11,9 +11,10 @@ function reporter(runner) {
   fs.writeFileSync(cachePath, JSON.stringify([]), 'utf8');
 
   runner.on('end', () => {
-    if (fs.existsSync(cachePath)) {
+    const cache = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+    if (cache.length) {
       console.log(chalk.red(`\n  (${chalk.underline.bold('Snapshot Diffs')})`));
-      const cache = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+
       cache.forEach(({ diffRatio, diffPixelCount, diffOutputPath }) => {
         console.log(
           `\n  - ${diffOutputPath}\n    Screenshot was ${diffRatio *
