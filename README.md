@@ -117,6 +117,45 @@ Run Cypress with `--reporter cypress-image-snapshot/reporter` in order to report
 
 If you using [iTerm2](https://www.iterm2.com/version3.html), the reporter will output any image diffs right in your terminal 😎.
 
+#### Multiple reporters
+
+Similar use case to: https://github.com/cypress-io/cypress-example-docker-circle#spec--xml-reports
+
+If you want to report snapshot diffs as well as generate XML junit reports, you can use [mocha-multi-reporters](https://github.com/stanleyhlng/mocha-multi-reporters).
+
+```
+npm install --save-dev mocha mocha-multi-reporters mocha-junit-reporter
+```
+
+You'll then want to set up a `cypress-reporters.json` which may look a little like this: 
+
+```json
+{
+  "reporterEnabled": "spec, mocha-junit-reporter, cypress-image-snapshot/reporter",
+  "mochaJunitReporterReporterOptions": {
+    "mochaFile": "cypress/results/results-[hash].xml"
+  }
+}
+```
+where `reporterEnabled` is a comma-separated list of reporters.
+
+You can then run cypress like this:
+
+`cypress run --reporter mocha-multi-reporters --reporter-options configFile=cypress-reporters.json`
+
+
+or add the following to your `cypress.json`
+
+```
+{
+  ..., //other options
+  "reporter": "mocha-multi-reporters",
+  "reporterOptions": {
+    "configFile": "cypress-reporters.json"
+  }
+}
+```
+
 ## Options
 
 - `customSnapshotsDir` : Path to the directory that snapshot images will be written to, defaults to `<rootDir>/cypress/snapshots`.
