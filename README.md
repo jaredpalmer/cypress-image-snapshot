@@ -127,7 +127,7 @@ If you want to report snapshot diffs as well as generate XML junit reports, you 
 npm install --save-dev mocha mocha-multi-reporters mocha-junit-reporter
 ```
 
-You'll then want to set up a `cypress-reporters.json` which may look a little like this: 
+You'll then want to set up a `cypress-reporters.json` which may look a little like this:
 
 ```json
 {
@@ -137,12 +137,12 @@ You'll then want to set up a `cypress-reporters.json` which may look a little li
   }
 }
 ```
+
 where `reporterEnabled` is a comma-separated list of reporters.
 
 You can then run cypress like this:
 
 `cypress run --reporter mocha-multi-reporters --reporter-options configFile=cypress-reporters.json`
-
 
 or add the following to your `cypress.json`
 
