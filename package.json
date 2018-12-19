@@ -8,6 +8,9 @@
   "files": [
     "*.js"
   ],
+  "engines": {
+    "node": ">=8"
+  },
   "scripts": {
     "prebuild": "rimraf *.js",
     "build": "babel src --out-dir .",
