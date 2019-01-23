@@ -1,3 +1,5 @@
 import { addMatchImageSnapshotCommand } from 'cypress-image-snapshot/command';
 
-addMatchImageSnapshotCommand();
+Cypress.Commands.add('matchImageSnapshot', options => {
+    addMatchImageSnapshotCommand(options);
+});
