@@ -50,7 +50,7 @@ and in `<rootDir>/cypress/support/commands.js` add:
 ```js
 import { addMatchImageSnapshotCommand } from 'cypress-image-snapshot/command';
 
-addMatchImageSnapshotCommand(options);
+addMatchImageSnapshotCommand();
 ```
 
 ## Syntax
