@@ -7,6 +7,7 @@
 
 import path from 'path';
 import fs from 'fs-extra';
+import pkgDir from 'pkg-dir';
 import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
 import { MATCH, RECORD } from './constants';
 
@@ -18,7 +19,7 @@ const dotSnap = '.snap.png';
 const dotDiff = '.diff.png';
 
 export const cachePath = path.join(
-  process.cwd(),
+  pkgDir.sync(process.cwd()),
   'cypress',
   '.snapshot-report'
 );
