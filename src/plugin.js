@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
 import fs from 'fs-extra';
-import pkgDir from 'pkg-dir';
 import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
+import path from 'path';
+import pkgDir from 'pkg-dir';
 import { MATCH, RECORD } from './constants';
 
 let snapshotOptions = {};
@@ -73,7 +73,9 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     screenshotPath.lastIndexOf(path.sep) + 1
   );
   const screenshotDir = screenshotPath.replace(screenshotFileName, '');
-  const relativePath = screenshotDir.match(/screenshots(.*)/)[1];
+  const relativePath = screenshotDir.match(
+    new RegExp(`${screenshotsFolder}(.*)`)
+  )[1];
   const snapshotIdentifier = screenshotFileName.replace('.png', '');
   const snapshotsDir = customSnapshotsDir
     ? path.join(process.cwd(), customSnapshotsDir, relativePath)
