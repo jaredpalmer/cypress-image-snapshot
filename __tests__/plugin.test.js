@@ -36,7 +36,7 @@ describe('plugin', () => {
     matchImageSnapshotOptions()(options);
 
     const result = matchImageSnapshotPlugin({
-      path: '/screenshots/path/to/cheese',
+      path: '/cypress/screenshots/path/to/cheese',
     });
     expect(result).toEqual({
       path: '/cypress/snapshots/path/to/__diff_output__/cheese.diff.png',
