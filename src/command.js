@@ -36,13 +36,23 @@ export function matchImageSnapshotCommand(defaultOptions) {
           pass,
           added,
           updated,
+          diffSize,
+          imageDimensions,
           diffRatio,
           diffPixelCount,
           diffOutputPath,
         }) => {
           if (!pass && !added && !updated) {
-            const message = `Screenshot was ${diffRatio *
-              100}% different from saved snapshot with ${diffPixelCount} different pixels.\n  See diff for details: ${diffOutputPath}`;
+            const message = diffSize
+              ? `Image size (${imageDimensions.baselineWidth}x${
+                  imageDimensions.baselineHeight
+                }) different than saved snapshot size (${
+                  imageDimensions.receivedWidth
+                }x${
+                  imageDimensions.receivedHeight
+                }).\nSee diff for details: ${diffOutputPath}`
+              : `Image was ${diffRatio *
+                  100}% different from saved snapshot with ${diffPixelCount} different pixels.\nSee diff for details: ${diffOutputPath}`;
 
             if (failOnSnapshotDiff) {
               throw new Error(message);
