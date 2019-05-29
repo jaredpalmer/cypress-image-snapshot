@@ -74,7 +74,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   );
   const screenshotDir = screenshotPath.replace(screenshotFileName, '');
   const relativePath = screenshotDir.match(
-    new RegExp(`${screenshotsFolder}(.*)`)
+    new RegExp(`${screenshotsFolder.replace(/\\/g, '\\\\')}(.*)`)
   )[1];
   const snapshotIdentifier = screenshotFileName.replace('.png', '');
   const snapshotsDir = customSnapshotsDir
