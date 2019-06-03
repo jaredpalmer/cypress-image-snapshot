@@ -7,8 +7,8 @@
 
 import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
 import {
-  matchImageSnapshotPlugin,
   matchImageSnapshotOptions,
+  matchImageSnapshotPlugin,
 } from '../src/plugin';
 
 jest.mock('jest-image-snapshot/src/diff-snapshot', () => ({
@@ -42,7 +42,7 @@ describe('plugin', () => {
       path: '/cypress/snapshots/path/to/__diff_output__/cheese.diff.png',
     });
     expect(diffImageToSnapshot).toHaveBeenCalledWith({
-      snapshotsDir: '/cypress/snapshots/path/to/',
+      snapshotsDir: '/cypress/snapshots/path/to',
       diffDir: '/cypress/snapshots/path/to/__diff_output__',
       updateSnapshot: true,
       receivedImageBuffer: 'cheese',
