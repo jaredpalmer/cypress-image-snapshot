@@ -26,18 +26,25 @@ jest.mock('fs-extra', () => ({
 }));
 
 describe('plugin', () => {
-  // We need to call `cleanScreenshots` after each test, because:
-  // 1. Each test which calls `matchImageSnapshotPlugin` pushes paths into
-  //    a module-level `screenshotPaths` array. This will be stale in the next
-  //    test if we have not cleaned it up.
-  // 2. Calling `cleanScreenshots` after each test is analogous to what we want
-  //    the Cypress runner to do.
-  afterEach(() => cleanScreenshots());
+  const originalCwd = process.cwd;
+
+  beforeEach(() => {
+    process.cwd = () => '';
+  });
+
+  afterEach(() => {
+    process.cwd = originalCwd;
+
+    // We need to call `cleanScreenshots` after each test, because:
+    // 1. Each test which calls `matchImageSnapshotPlugin` pushes paths into
+    //    a module-level `screenshotPaths` array. This will be stale in the next
+    //    test if we have not cleaned it up.
+    // 2. Calling `cleanScreenshots` after each test is analogous to what we want
+    //    the Cypress runner to do.
+    cleanScreenshots();
+  });
 
   it('should pass options through', () => {
-    const originalCwd = process.cwd;
-    process.cwd = () => '';
-
     const options = {
       screenshotsFolder: '/cypress/screenshots',
       updateSnapshots: true,
@@ -60,14 +67,9 @@ describe('plugin', () => {
       failureThreshold: 0,
       failureThresholdType: 'pixel',
     });
-
-    process.cwd = originalCwd;
   });
 
   it('should keep track of and clean up multiple snapshots when matchImageSnapshot is called multiple times during a test run', () => {
-    const originalCwd = process.cwd;
-    process.cwd = () => '';
-
     const options = {
       screenshotsFolder: '/cypress/screenshots',
       updateSnapshots: true,
@@ -118,7 +120,5 @@ describe('plugin', () => {
     // We do this by calling `cleanScreenshots` again and checking that it does not try to delete any paths.
     cleanScreenshots();
     expect(removeSync).toHaveBeenCalledTimes(0);
-
-    process.cwd = originalCwd;
   });
 });
