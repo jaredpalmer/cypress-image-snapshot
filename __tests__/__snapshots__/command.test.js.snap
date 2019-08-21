@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`command should fail 1`] = `
+"Image was 10% different from saved snapshot with 10 different pixels.
+See diff for details: cheese"
+`;

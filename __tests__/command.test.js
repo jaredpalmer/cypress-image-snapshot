@@ -6,7 +6,15 @@
  */
 
 global.Cypress = {
-  env: () => false,
+  env: envName => {
+    switch (envName) {
+      default:
+      case 'failOnSnapshotDiff':
+        return undefined;
+      case 'updateSnapshots':
+        return false;
+    }
+  },
   log: () => null,
   config: () => '/cypress/screenshots',
   Commands: {
@@ -52,15 +60,15 @@ describe('command', () => {
     });
   });
 
-  it('should pass', () => {
+  it('should pass', async () => {
     global.cy.task = jest.fn().mockResolvedValue({ pass: true });
 
-    expect(
+    await expect(
       boundMatchImageSnapshot(subject, commandOptions)
     ).resolves.not.toThrow();
   });
 
-  it('should fail', () => {
+  it('should fail', async () => {
     global.cy.task = jest.fn().mockResolvedValue({
       pass: false,
       added: false,
@@ -70,7 +78,7 @@ describe('command', () => {
       diffOutputPath: 'cheese',
     });
 
-    expect(
+    await expect(
       boundMatchImageSnapshot(subject, commandOptions)
     ).rejects.toThrowErrorMatchingSnapshot();
   });

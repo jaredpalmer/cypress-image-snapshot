@@ -10,7 +10,8 @@ import { MATCH, RECORD } from './constants';
 const screenshotsFolder = Cypress.config('screenshotsFolder');
 const updateSnapshots = Cypress.env('updateSnapshots') || false;
 const failOnSnapshotDiff =
-  typeof Cypress.env('failOnSnapshotDiff') === 'undefined';
+  typeof Cypress.env('failOnSnapshotDiff') === 'undefined' ||
+  Cypress.env('failOnSnapshotDiff');
 
 export function matchImageSnapshotCommand(defaultOptions) {
   return function matchImageSnapshot(subject, maybeName, commandOptions) {
