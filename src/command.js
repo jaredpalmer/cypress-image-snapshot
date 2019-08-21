@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { MATCH, RECORD } from './constants';
+import { MATCH, RECORD, CLEAN_SCREENSHOTS } from './constants';
 
 const screenshotsFolder = Cypress.config('screenshotsFolder');
 const updateSnapshots = Cypress.env('updateSnapshots') || false;
@@ -79,4 +79,10 @@ export function addMatchImageSnapshotCommand(
     },
     matchImageSnapshotCommand(options)
   );
+
+  // After completing each test, we need to instruct the plugin to clean up
+  // the screenshots that were created.
+  afterEach(() => {
+    cy.task(CLEAN_SCREENSHOTS, null, { log: false });
+  });
 }

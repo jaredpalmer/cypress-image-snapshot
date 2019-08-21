@@ -30,6 +30,7 @@ const {
   matchImageSnapshotCommand,
   addMatchImageSnapshotCommand,
 } = require('../src/command');
+const { CLEAN_SCREENSHOTS } = require('../src/constants');
 
 const defaultOptions = {
   failureThreshold: 0,
@@ -111,5 +112,25 @@ describe('command', () => {
       { prevSubject: ['optional', 'element', 'window', 'document'] },
       expect.any(Function)
     );
+  });
+
+  it('should setup a global afterEach when the command is added that cleans up screenshots', () => {
+    const afterEach = jest.spyOn(global, 'afterEach');
+
+    try {
+      addMatchImageSnapshotCommand();
+      expect(afterEach).toHaveBeenCalledWith(expect.any(Function));
+
+      const [afterEachCallback] = afterEach.mock.calls[0];
+
+      global.cy.task = jest.fn();
+      afterEachCallback();
+
+      expect(global.cy.task).toHaveBeenCalledWith(CLEAN_SCREENSHOTS, null, {
+        log: false,
+      });
+    } finally {
+      afterEach.mockRestore();
+    }
   });
 });
