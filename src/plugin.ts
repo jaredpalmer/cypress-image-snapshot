@@ -4,15 +4,15 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
 import fs from 'fs-extra';
 import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
 import path from 'path';
 import pkgDir from 'pkg-dir';
+
 import { MATCH, RECORD } from './constants';
 
-let snapshotOptions = {};
-let snapshotResult = {};
+let snapshotOptions = <any>{};
+let snapshotResult = <any>{};
 let snapshotRunning = false;
 const kebabSnap = '-snap.png';
 const dotSnap = '.snap.png';
@@ -24,29 +24,25 @@ export const cachePath = path.join(
   '.snapshot-report'
 );
 
-export function matchImageSnapshotOptions() {
-  return (options = {}) => {
-    snapshotOptions = options;
-    snapshotRunning = true;
-    return null;
-  };
+export function matchImageSnapshotOptions(options = {}) {
+  snapshotOptions = options;
+  snapshotRunning = true;
+  return null;
 }
 
-export function matchImageSnapshotResult() {
-  return () => {
-    snapshotRunning = false;
+export function matchImageSnapshotResult(config: any) {
+  snapshotRunning = false;
 
-    const { pass, added, updated } = snapshotResult;
+  const { pass, added, updated } = snapshotResult;
 
-    // @todo is there a less expensive way to share state between test and reporter?
-    if (!pass && !added && !updated && fs.existsSync(cachePath)) {
-      const cache = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
-      cache.push(snapshotResult);
-      fs.writeFileSync(cachePath, JSON.stringify(cache), 'utf8');
-    }
+  // @todo is there a less expensive way to share state between test and reporter?
+  if (!pass && !added && !updated && fs.existsSync(cachePath)) {
+    const cache = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+    cache.push(snapshotResult);
+    fs.writeFileSync(cachePath, JSON.stringify(cache), 'utf8');
+  }
 
-    return snapshotResult;
-  };
+  return snapshotResult;
 }
 
 export function matchImageSnapshotPlugin({ path: screenshotPath }) {
@@ -129,7 +125,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   };
 }
 
-export function addMatchImageSnapshotPlugin(on, config) {
+export function addMatchImageSnapshotPlugin(on, config: any) {
   on('task', {
     [MATCH]: matchImageSnapshotOptions(config),
     [RECORD]: matchImageSnapshotResult(config),

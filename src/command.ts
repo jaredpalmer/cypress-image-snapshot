@@ -1,12 +1,11 @@
+import { MATCH, RECORD } from './constants';
+
 /**
  * Copyright (c) 2018-present The Palmer Group
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-import { MATCH, RECORD } from './constants';
-
 const screenshotsFolder = Cypress.config('screenshotsFolder');
 const updateSnapshots = Cypress.env('updateSnapshots') || false;
 const failOnSnapshotDiff =
@@ -57,7 +56,7 @@ export function matchImageSnapshotCommand(defaultOptions) {
             if (failOnSnapshotDiff) {
               throw new Error(message);
             } else {
-              Cypress.log({ message });
+              Cypress.log({ message: [...message] });
             }
           }
         }
