@@ -1,9 +1,9 @@
 {
-  "name": "cypress-image-snapshot",
-  "version": "3.1.1",
-  "description": "Cypress bindings for jest-image-snapshot.",
-  "repository": "https://github.com/palmerhq/cypress-image-snapshot",
-  "author": "Jack Cross <jack@palmer.net>",
+  "name": "goalkeeper-image-snapshot",
+  "version": "0.0.1",
+  "description": "Goalkeeper bindings for jest-image-snapshot.",
+  "repository": "https://github.com/HOUCe/goalkeeper-image-snapshot",
+  "author": "houce",
   "license": "MIT",
   "files": [
     "*.js"
