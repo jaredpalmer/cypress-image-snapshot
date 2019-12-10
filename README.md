@@ -167,7 +167,7 @@ For example, the default options we use in `<rootDir>/cypress/support/commands.j
 
 ```js
 addMatchImageSnapshotCommand({
-  failureThreshold: 0.03, // threshold for entire image
+  failureThreshold: 0.03, // 3% threshold for entire image 
   failureThresholdType: 'percent', // percent of image or number of pixels
   customDiffConfig: { threshold: 0.1 }, // threshold for each pixel
   capture: 'viewport', // capture viewport in screenshot
