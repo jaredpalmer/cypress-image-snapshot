@@ -1,13 +1,15 @@
+'use strict';
+
 Object.defineProperty(exports, '__esModule', {
   value: true,
 });
 
-const _extends =
+var _extends =
   Object.assign ||
   function(target) {
-    for (let i = 1; i < arguments.length; i++) {
-      const source = arguments[i];
-      for (const key in source) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
         if (Object.prototype.hasOwnProperty.call(source, key)) {
           target[key] = source[key];
         }
@@ -25,7 +27,7 @@ const _extends =
 exports.matchImageSnapshotCommand = matchImageSnapshotCommand;
 exports.addMatchImageSnapshotCommand = addMatchImageSnapshotCommand;
 
-const _constants = require('./constants');
+var _constants = require('./constants');
 
 const screenshotsFolder = Cypress.config('screenshotsFolder');
 const updateSnapshots = Cypress.env('updateSnapshots') || false;
