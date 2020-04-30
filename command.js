@@ -66,8 +66,8 @@ function matchImageSnapshotCommand(defaultOptions) {
           diffOutputPath,
         }) => {
           if (!pass && !added && !updated) {
-            if ((commandOptions.retryCounter || 0) > 0) {
-              cy.wait(100);
+            if (commandOptions.retryCounter) {
+              cy.wait(commandOptions.retryWaitingTime || 100);
               commandOptions.retryCounter--;
               return matchImageSnapshot(subject, maybeName, commandOptions);
             }
