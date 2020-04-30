@@ -161,7 +161,9 @@ or add the following to your `cypress.json`
 - `customSnapshotsDir` : Path to the directory that snapshot images will be written to, defaults to `<rootDir>/cypress/snapshots`.
 - `customDiffDir`: Path to the directory that diff images will be written to, defaults to a sibling `__diff_output__` directory alongside each snapshot.
 
-- `retryCounter` : Retry up to n times before raise a failer and the execution gonna wait for 100 millisecond betwen each iteration.
+- `retryCounter` : Retry up to n times before raising a failer. The process will wait for 100 be defualt millisecond betwen each iteration.
+
+- `retryWaitingTime` : For each trying, the process will wait for this time and the defualt is 100 millisecond.
 
 Additionally, any options for [`cy.screenshot()`](https://docs.cypress.io/api/commands/screenshot.html#Arguments) and [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot#optional-configuration) can be passed in the `options` argument to `addMatchImageSnapshotCommand` and `cy.matchImageSnapshot()`. The local options in `cy.matchImageSnapshot()` will overwrite the default options set in `addMatchImageSnapshot`.
 
