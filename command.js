@@ -67,9 +67,13 @@ function matchImageSnapshotCommand(defaultOptions) {
         }) => {
           if (!pass && !added && !updated) {
             if (commandOptions.retryCounter) {
-              cy.wait(commandOptions.retryWaitingTime || 100);
-              commandOptions.retryCounter--;
-              return matchImageSnapshot(subject, maybeName, commandOptions);
+              if (commandOptions.retryCounter) {
+                const tmp = {};
+                Object.assign(tmp, commandOptions);
+                cy.wait(tmp.retryWaitingTime || 100);
+                tmp.retryCounter--;
+                return matchImageSnapshot(subject, maybeName, tmp);
+              }
             }
             const message = diffSize
               ? `Image size (${imageDimensions.baselineWidth}x${
