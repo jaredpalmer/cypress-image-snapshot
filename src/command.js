@@ -43,14 +43,13 @@ export function matchImageSnapshotCommand(defaultOptions) {
           diffOutputPath,
         }) => {
           if (!pass && !added && !updated) {
-            if (commandOptions.retryCounter) {
-              if (commandOptions.retryCounter) {
-                const tmp = {};
-                Object.assign(tmp, commandOptions);
-                cy.wait(tmp.retryWaitingTime || 100);
-                tmp.retryCounter--;
-                return matchImageSnapshot(subject, maybeName, tmp);
-              }
+            if (commandOptions.retryCounter > 0) {
+              const newCommandOptions = {
+                ...commandOptions,
+                retryCounter: commandOptions.retryCounter - 1,
+              };
+              cy.wait(newCommandOptions.retryWaitingTime || 100);
+              return matchImageSnapshot(subject, maybeName, newCommandOptions);
             }
             const message = diffSize
               ? `Image size (${imageDimensions.baselineWidth}x${
