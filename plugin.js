@@ -130,9 +130,11 @@ function matchImageSnapshotPlugin({ path: screenshotPath }) {
   const receivedImageBuffer = _fsExtra2.default.readFileSync(screenshotPath);
   _fsExtra2.default.removeSync(screenshotPath);
 
-  const { dir: screenshotDir, name: snapshotIdentifier } = _path2.default.parse(
+  let { dir: screenshotDir, name: snapshotIdentifier } = _path2.default.parse(
     screenshotPath
   );
+
+  snapshotIdentifier = snapshotIdentifier.split(' ')[0];
 
   const relativePath = _path2.default.relative(
     screenshotsFolder,
