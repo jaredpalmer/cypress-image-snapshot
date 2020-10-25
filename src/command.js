@@ -15,6 +15,7 @@ const failOnSnapshotDiff =
 export function matchImageSnapshotCommand(defaultOptions) {
   return function matchImageSnapshot(subject, maybeName, commandOptions) {
     const options = {
+      resolveDiffOutputPath: diffOutputPath => diffOutputPath,
       ...defaultOptions,
       ...((typeof maybeName === 'string' ? commandOptions : maybeName) || {}),
     };
@@ -50,9 +51,13 @@ export function matchImageSnapshotCommand(defaultOptions) {
                   imageDimensions.receivedWidth
                 }x${
                   imageDimensions.receivedHeight
-                }).\nSee diff for details: ${diffOutputPath}`
+                }).\nSee diff for details: ${options.resolveDiffOutputPath(
+                  diffOutputPath
+                )}`
               : `Image was ${diffRatio *
-                  100}% different from saved snapshot with ${diffPixelCount} different pixels.\nSee diff for details: ${diffOutputPath}`;
+                  100}% different from saved snapshot with ${diffPixelCount} different pixels.\nSee diff for details: ${options.resolveDiffOutputPath(
+                  diffOutputPath
+                )}`;
 
             if (failOnSnapshotDiff) {
               throw new Error(message);

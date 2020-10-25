@@ -1,6 +1,6 @@
-# Cypress Image Snapshot
+# Goalkeeper Image Snapshot
 
-Cypress Image Snapshot binds [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot)'s image diffing logic to [Cypress.io](https://cypress.io) commands. **The goal is to catch visual regressions during integration tests.**
+Goalkeeper Image Snapshot binds [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot)'s image diffing logic to [Cypress.io](https://cypress.io) commands. **The goal is to catch visual regressions during integration tests.**
 
 <details>
 <summary>See it in action!</summary>
@@ -19,39 +19,11 @@ When an image diff fails, a composite image is constructed.
 
 ### Test Reporter
 
-When using `cypress run` and `--reporter cypress-image-snapshot/reporter`, diffs are output to your terminal.
+When using `cypress run` and `--reporter @kfe/goalkeeper-image-snapshot/reporter`, diffs are output to your terminal.
 
 <img width="500px" src="https://user-images.githubusercontent.com/1153686/48518011-303d4580-e836-11e8-83ed-776acae78f9f.png" alt="Cypress Image Snapshot reporter"/>
 
 </details>
-
-## Installation
-
-Install from npm
-
-```bash
-npm install --save-dev cypress-image-snapshot
-```
-
-then add the following in your project's `<rootDir>/cypress/plugins/index.js`:
-
-```js
-const {
-  addMatchImageSnapshotPlugin,
-} = require('cypress-image-snapshot/plugin');
-
-module.exports = (on, config) => {
-  addMatchImageSnapshotPlugin(on, config);
-};
-```
-
-and in `<rootDir>/cypress/support/commands.js` add:
-
-```js
-import { addMatchImageSnapshotCommand } from 'cypress-image-snapshot/command';
-
-addMatchImageSnapshotCommand();
-```
 
 ## Syntax
 
@@ -113,7 +85,7 @@ Run Cypress with `--env failOnSnapshotDiff=false` in order to prevent test failu
 
 ### Reporter
 
-Run Cypress with `--reporter cypress-image-snapshot/reporter` in order to report snapshot diffs in your test results. This can be helpful to use with `--env failOnSnapshotDiff=false` in order to quickly view all failing snapshots and their diffs.
+Run Cypress with `--reporter @kfe/goalkeeper-image-snapshot/reporter` in order to report snapshot diffs in your test results. This can be helpful to use with `--env failOnSnapshotDiff=false` in order to quickly view all failing snapshots and their diffs.
 
 If you using [iTerm2](https://www.iterm2.com/version3.html), the reporter will output any image diffs right in your terminal 😎.
 
@@ -131,7 +103,7 @@ You'll then want to set up a `cypress-reporters.json` which may look a little li
 
 ```json
 {
-  "reporterEnabled": "spec, mocha-junit-reporter, cypress-image-snapshot/reporter",
+  "reporterEnabled": "spec, mocha-junit-reporter, @kfe/goalkeeper-image-snapshot/reporter",
   "mochaJunitReporterReporterOptions": {
     "mochaFile": "cypress/results/results-[hash].xml"
   }
@@ -188,5 +160,5 @@ The workflow of `cy.matchImageSnapshot()` when running Cypress is:
 
 Cypress's screenshot functionality has changed significantly across `3.x.x` versions. In order to avoid buggy behavior, please use the following version ranges:
 
-- `cypress-image-snapshot@>=1.0.0 <2.0.0` for `cypress@>=3.0.0 <3.0.2`
-- `cypress-image-snapshot@>2.0.0` for `cypress@>3.0.2`.
+- `@kfe/goalkeeper-image-snapshot@>=1.0.0 <2.0.0` for `cypress@>=3.0.0 <3.0.2`
+- `@kfe/goalkeeper-image-snapshot@>2.0.0` for `cypress@>3.0.2`.
