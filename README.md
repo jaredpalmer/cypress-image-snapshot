@@ -1,6 +1,5 @@
 # Cypress Image Snapshot
 
-
 Cypress Image Snapshot binds [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot)'s image diffing logic to [Cypress.io](https://cypress.io) commands. **The goal is to catch visual regressions during integration tests.**
 
 [![Discord](https://img.shields.io/discord/769256827007139912?label=%F0%9F%92%AC%20%20join%20us%20on%20discord&style=plastic)](https://discord.com/invite/RevdZTYMzr)
@@ -175,6 +174,25 @@ addMatchImageSnapshotCommand({
   customDiffConfig: { threshold: 0.1 }, // threshold for each pixel
   capture: 'viewport', // capture viewport in screenshot
 });
+```
+
+## Plugin options
+
+- `getSpecSnapshotFolder`: a function that allows customizing sub directory within snapshots folder.
+
+`getSpecSnapshotFolder` is particularly useful to make paths to snapshots consistent.
+Because of [the existing behaviour](https://github.com/cypress-io/cypress/issues/1586) of Cypress,
+`cy.screenshot` in the Interactive mode puts screenshots in different sub directories.
+
+If you want to store all your snapshots in the root of snapshots folder, you may override the spec folder like that:
+
+```
+const { addMatchImageSnapshotPlugin } = require('cypress-image-snapshot/plugin');
+
+module.exports = (on, config) => {
+  const getSpecSnapshotFolder = (specScreenshotFolder) => '';
+  addMatchImageSnapshotPlugin(on, config, {getSpecSnapshotFolder});
+};
 ```
 
 ## How it works

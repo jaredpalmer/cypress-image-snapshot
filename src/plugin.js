@@ -18,6 +18,8 @@ const kebabSnap = '-snap.png';
 const dotSnap = '.snap.png';
 const dotDiff = '.diff.png';
 
+const defaultGetSpecSnapshotFolder = specScreenshotDir => specScreenshotDir;
+
 export const cachePath = path.join(
   pkgDir.sync(process.cwd()),
   'cypress',
@@ -49,7 +51,12 @@ export function matchImageSnapshotResult() {
   };
 }
 
-export function matchImageSnapshotPlugin({ path: screenshotPath }) {
+export const matchImageSnapshotPlugin = (pluginOptions = {}) => ({
+  path: screenshotPath,
+}) => {
+  const {
+    getSpecSnapshotFolder = defaultGetSpecSnapshotFolder,
+  } = pluginOptions;
   if (!snapshotRunning) {
     return null;
   }
@@ -73,10 +80,12 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     screenshotPath
   );
 
-  const relativePath = path.relative(screenshotsFolder, screenshotDir);
+  const specSnapshotDir = getSpecSnapshotFolder(
+    path.relative(screenshotsFolder, screenshotDir)
+  );
   const snapshotsDir = customSnapshotsDir
-    ? path.join(process.cwd(), customSnapshotsDir, relativePath)
-    : path.join(screenshotsFolder, '..', 'snapshots', relativePath);
+    ? path.join(process.cwd(), customSnapshotsDir, specSnapshotDir)
+    : path.join(screenshotsFolder, '..', 'snapshots', specSnapshotDir);
 
   const snapshotKebabPath = path.join(
     snapshotsDir,
@@ -88,7 +97,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   );
 
   const diffDir = customDiffDir
-    ? path.join(process.cwd(), customDiffDir, relativePath)
+    ? path.join(process.cwd(), customDiffDir, specSnapshotDir)
     : path.join(snapshotsDir, '__diff_output__');
   const diffDotPath = path.join(diffDir, `${snapshotIdentifier}${dotDiff}`);
 
@@ -127,12 +136,12 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   return {
     path: snapshotDotPath,
   };
-}
+};
 
-export function addMatchImageSnapshotPlugin(on, config) {
+export function addMatchImageSnapshotPlugin(on, config, pluginOptions) {
   on('task', {
     [MATCH]: matchImageSnapshotOptions(config),
     [RECORD]: matchImageSnapshotResult(config),
   });
-  on('after:screenshot', matchImageSnapshotPlugin);
+  on('after:screenshot', matchImageSnapshotPlugin(pluginOptions));
 }

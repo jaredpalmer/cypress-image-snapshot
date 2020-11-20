@@ -35,7 +35,7 @@ describe('plugin', () => {
 
     matchImageSnapshotOptions()(options);
 
-    const result = matchImageSnapshotPlugin({
+    const result = matchImageSnapshotPlugin()({
       path: '/cypress/screenshots/path/to/cheese',
     });
     expect(result).toEqual({
@@ -44,6 +44,38 @@ describe('plugin', () => {
     expect(diffImageToSnapshot).toHaveBeenCalledWith({
       snapshotsDir: '/cypress/snapshots/path/to',
       diffDir: '/cypress/snapshots/path/to/__diff_output__',
+      updateSnapshot: true,
+      receivedImageBuffer: 'cheese',
+      snapshotIdentifier: 'cheese',
+      failureThreshold: 0,
+      failureThresholdType: 'pixel',
+    });
+
+    process.cwd = originalCwd;
+  });
+
+  it('should map spec screenshot folder to a custom one', () => {
+    const originalCwd = process.cwd;
+    process.cwd = () => '';
+
+    const options = {
+      screenshotsFolder: '/cypress/screenshots',
+      updateSnapshots: true,
+    };
+
+    matchImageSnapshotOptions()(options);
+
+    const result = matchImageSnapshotPlugin({
+      getSpecSnapshotFolder: () => '',
+    })({
+      path: '/cypress/screenshots/path/to/cheese',
+    });
+    expect(result).toEqual({
+      path: '/cypress/snapshots/__diff_output__/cheese.diff.png',
+    });
+    expect(diffImageToSnapshot).toHaveBeenCalledWith({
+      snapshotsDir: '/cypress/snapshots',
+      diffDir: '/cypress/snapshots/__diff_output__',
       updateSnapshot: true,
       receivedImageBuffer: 'cheese',
       snapshotIdentifier: 'cheese',
