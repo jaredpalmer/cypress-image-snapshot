@@ -1,9 +1,9 @@
 {
-  "name": "cypress-image-snapshot",
+  "name": "@prezi/cypress-image-snapshot",
   "version": "4.0.0",
   "description": "Cypress bindings for jest-image-snapshot.",
-  "repository": "https://github.com/palmerhq/cypress-image-snapshot",
-  "author": "Jack Cross <jack@palmer.net>",
+  "repository": "https://github.com/prezi/cypress-image-snapshot",
+  "author": "Prezi Activation team <activation@prezi.com>",
   "license": "MIT",
   "files": [
     "*.js"
@@ -39,7 +39,7 @@
     "jest": "^23.6.0",
     "prettier": "1.15.3",
     "pretty-quick": "^1.8.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.7.1"
   },
   "peerDependencies": {
     "cypress": "^4.5.0"
