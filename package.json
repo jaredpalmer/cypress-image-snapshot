@@ -3,7 +3,7 @@
   "version": "4.0.0",
   "description": "Cypress bindings for jest-image-snapshot.",
   "repository": "https://github.com/prezi/cypress-image-snapshot",
-  "author": "Prezi Activation team <activation@prezi.com>",
+  "author": "Prezi Activation team <activationteam@prezi.com>",
   "license": "MIT",
   "files": [
     "*.js"
