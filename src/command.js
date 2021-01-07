@@ -37,6 +37,7 @@ export function matchImageSnapshotCommand(defaultOptions) {
       str.replace(/[/\\?%*:| "<>]/g, '-').toLowerCase()
     );
     if (name == undefined && snapshotFilepath.length > 0) {
+      // if the snapshot name is not specified use the name of the test case
       name = snapshotFilepath.pop();
     }
     let forceWaiting = false;
@@ -51,7 +52,8 @@ export function matchImageSnapshotCommand(defaultOptions) {
       }).then(ret => {
         forceWaiting = !ret.snapshotExists;
         if (forceWaiting) {
-          // if we are
+          // if we are recording a test case for the first time we
+          // need to wait for the result to be correct instead of retrying
           cy.wait(timeout);
         }
 
@@ -86,6 +88,7 @@ export function matchImageSnapshotCommand(defaultOptions) {
                 if (failOnSnapshotDiff) {
                   const currentTime = Date.now();
                   if (currentTime - startTime < timeout && !forceWaiting) {
+                    // retry matching the image
                     match();
                   } else {
                     throw new Error(message);
