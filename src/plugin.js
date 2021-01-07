@@ -28,7 +28,26 @@ export function matchImageSnapshotOptions() {
   return (options = {}) => {
     snapshotOptions = options;
     snapshotRunning = true;
-    return null;
+
+    const snapshotPath = options.customSnapshotsDir
+      ? path.join(
+          process.cwd(),
+          options.customSnapshotsDir,
+          ...options.snapshotFilepath,
+          options.snapshotName
+        )
+      : path.join(
+          options.screenshotsFolder,
+          '..',
+          'snapshots',
+          ...options.snapshotFilepath,
+          options.snapshotName
+        );
+
+    return {
+      snapshotPath,
+      snapshotExists: fs.existsSync(`${snapshotPath}${dotSnap}`),
+    };
   };
 }
 
@@ -57,6 +76,8 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   const {
     screenshotsFolder,
     updateSnapshots,
+    snapshotFilepath,
+    snapshotName,
     options: {
       failureThreshold = 0,
       failureThresholdType = 'pixel',
@@ -75,24 +96,21 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
 
   const relativePath = path.relative(screenshotsFolder, screenshotDir);
   const snapshotsDir = customSnapshotsDir
-    ? path.join(process.cwd(), customSnapshotsDir, relativePath)
-    : path.join(screenshotsFolder, '..', 'snapshots', relativePath);
+    ? path.join(process.cwd(), customSnapshotsDir, ...snapshotFilepath)
+    : path.join(screenshotsFolder, '..', 'snapshots', ...snapshotFilepath);
 
   const snapshotKebabPath = path.join(
     snapshotsDir,
-    `${snapshotIdentifier}${kebabSnap}`
+    `${snapshotName}${kebabSnap}`
   );
-  const snapshotDotPath = path.join(
-    snapshotsDir,
-    `${snapshotIdentifier}${dotSnap}`
-  );
+  const snapshotDotPath = path.join(snapshotsDir, `${snapshotName}${dotSnap}`);
 
   const diffDir = customDiffDir
-    ? path.join(process.cwd(), customDiffDir, relativePath)
+    ? path.join(process.cwd(), customDiffDir, ...snapshotFilepath)
     : path.join(snapshotsDir, '__diff_output__');
-  const diffDotPath = path.join(diffDir, `${snapshotIdentifier}${dotDiff}`);
+  const diffDotPath = path.join(diffDir, `${snapshotName}${dotDiff}`);
 
-  if (fs.pathExistsSync(snapshotDotPath)) {
+  if (fs.existsSync(snapshotDotPath)) {
     fs.copySync(snapshotDotPath, snapshotKebabPath);
   }
 
@@ -100,7 +118,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     snapshotsDir,
     diffDir,
     receivedImageBuffer,
-    snapshotIdentifier,
+    snapshotIdentifier: snapshotName,
     failureThreshold,
     failureThresholdType,
     updateSnapshot: updateSnapshots,
@@ -118,15 +136,17 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     return {
       path: diffDotPath,
     };
+  } else {
+    if (!pass) {
+      fs.copySync(snapshotKebabPath, snapshotDotPath);
+    }
+    fs.removeSync(snapshotKebabPath);
+    snapshotResult.diffOutputPath = snapshotDotPath;
+
+    return {
+      path: snapshotDotPath,
+    };
   }
-
-  fs.copySync(snapshotKebabPath, snapshotDotPath);
-  fs.removeSync(snapshotKebabPath);
-  snapshotResult.diffOutputPath = snapshotDotPath;
-
-  return {
-    path: snapshotDotPath,
-  };
 }
 
 export function addMatchImageSnapshotPlugin(on, config) {
