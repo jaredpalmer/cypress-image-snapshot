@@ -1,6 +1,6 @@
 {
   "name": "@prezi/cypress-image-snapshot",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "Cypress bindings for jest-image-snapshot.",
   "repository": "https://github.com/prezi/cypress-image-snapshot",
   "author": "Prezi Activation team <activationteam@prezi.com>",

@@ -121,8 +121,8 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   });
 
   const { pass, added, updated, diffOutputPath } = snapshotResult;
-
-  if (!pass && !added && !updated) {
+  const isFailed = !pass && !added && !updated;
+  if (isFailed) {
     fs.copySync(diffOutputPath, diffDotPath);
     fs.removeSync(diffOutputPath);
     fs.removeSync(snapshotKebabPath);
@@ -134,6 +134,12 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   } else {
     if (!pass) {
       fs.copySync(snapshotKebabPath, snapshotDotPath);
+    }
+    const isPassedAfterFailure =
+      pass && !added && !updated && fs.existsSync(diffDotPath);
+    if (isPassedAfterFailure) {
+      console.log(`Removing file after success: ${diffDotPath}`);
+      fs.removeSync(diffDotPath);
     }
     fs.removeSync(snapshotKebabPath);
     snapshotResult.diffOutputPath = snapshotDotPath;
