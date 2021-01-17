@@ -6,7 +6,15 @@
  */
 
 global.Cypress = {
-  env: () => false,
+  env: envName => {
+    switch (envName) {
+      default:
+      case 'failOnSnapshotDiff':
+        return undefined;
+      case 'updateSnapshots':
+        return false;
+    }
+  },
   log: () => null,
   config: () => '/cypress/screenshots',
   Commands: {
@@ -22,6 +30,7 @@ const {
   matchImageSnapshotCommand,
   addMatchImageSnapshotCommand,
 } = require('../src/command');
+const { CLEAN_SCREENSHOTS } = require('../src/constants');
 
 const defaultOptions = {
   failureThreshold: 0,
@@ -52,15 +61,15 @@ describe('command', () => {
     });
   });
 
-  it('should pass', () => {
+  it('should pass', async () => {
     global.cy.task = jest.fn().mockResolvedValue({ pass: true });
 
-    expect(
+    await expect(
       boundMatchImageSnapshot(subject, commandOptions)
     ).resolves.not.toThrow();
   });
 
-  it('should fail', () => {
+  it('should fail', async () => {
     global.cy.task = jest.fn().mockResolvedValue({
       pass: false,
       added: false,
@@ -70,7 +79,7 @@ describe('command', () => {
       diffOutputPath: 'cheese',
     });
 
-    expect(
+    await expect(
       boundMatchImageSnapshot(subject, commandOptions)
     ).rejects.toThrowErrorMatchingSnapshot();
   });
@@ -103,5 +112,25 @@ describe('command', () => {
       { prevSubject: ['optional', 'element', 'window', 'document'] },
       expect.any(Function)
     );
+  });
+
+  it('should setup a global afterEach when the command is added that cleans up screenshots', () => {
+    const afterEach = jest.spyOn(global, 'afterEach');
+
+    try {
+      addMatchImageSnapshotCommand();
+      expect(afterEach).toHaveBeenCalledWith(expect.any(Function));
+
+      const [afterEachCallback] = afterEach.mock.calls[0];
+
+      global.cy.task = jest.fn();
+      afterEachCallback();
+
+      expect(global.cy.task).toHaveBeenCalledWith(CLEAN_SCREENSHOTS, null, {
+        log: false,
+      });
+    } finally {
+      afterEach.mockRestore();
+    }
   });
 });

@@ -9,11 +9,13 @@ import fs from 'fs-extra';
 import { diffImageToSnapshot } from 'jest-image-snapshot/src/diff-snapshot';
 import path from 'path';
 import pkgDir from 'pkg-dir';
-import { MATCH, RECORD } from './constants';
+import { MATCH, RECORD, CLEAN_SCREENSHOTS } from './constants';
 
 let snapshotOptions = {};
 let snapshotResult = {};
 let snapshotRunning = false;
+let screenshotPaths = [];
+
 const kebabSnap = '-snap.png';
 const dotSnap = '.snap.png';
 const dotDiff = '.diff.png';
@@ -49,6 +51,12 @@ export function matchImageSnapshotResult() {
   };
 }
 
+export function cleanScreenshots() {
+  screenshotPaths.forEach(screenshotPath => fs.removeSync(screenshotPath));
+  screenshotPaths = [];
+  return null;
+}
+
 export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   if (!snapshotRunning) {
     return null;
@@ -67,7 +75,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
   } = snapshotOptions;
 
   const receivedImageBuffer = fs.readFileSync(screenshotPath);
-  fs.removeSync(screenshotPath);
+  screenshotPaths.push(screenshotPath);
 
   const { dir: screenshotDir, name } = path.parse(
     screenshotPath
@@ -136,6 +144,7 @@ export function addMatchImageSnapshotPlugin(on, config) {
   on('task', {
     [MATCH]: matchImageSnapshotOptions(config),
     [RECORD]: matchImageSnapshotResult(config),
+    [CLEAN_SCREENSHOTS]: cleanScreenshots,
   });
   on('after:screenshot', matchImageSnapshotPlugin);
 }
