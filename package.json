@@ -16,7 +16,9 @@
     "build": "babel src --out-dir .",
     "test": "jest",
     "lint": "eslint src",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "changeset": "changeset",
+    "release": "changeset publish"
   },
   "dependencies": {
     "chalk": "^2.4.1",
@@ -27,6 +29,8 @@
     "term-img": "^4.0.0"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.2.8",
+    "@changesets/cli": "^2.13.1",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
