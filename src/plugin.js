@@ -76,9 +76,10 @@ export const matchImageSnapshotPlugin = (pluginOptions = {}) => ({
   const receivedImageBuffer = fs.readFileSync(screenshotPath);
   fs.removeSync(screenshotPath);
 
-  const { dir: screenshotDir, name: snapshotIdentifier } = path.parse(
-    screenshotPath
-  );
+  const { dir: screenshotDir, name } = path.parse(screenshotPath);
+
+  // remove the cypress v5+ native retries suffix from the file name
+  const snapshotIdentifier = name.replace(/ \(attempt [0-9]+\)/, '');
 
   const specSnapshotDir = getSpecSnapshotFolder(
     path.relative(screenshotsFolder, screenshotDir)
