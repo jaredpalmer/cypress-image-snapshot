@@ -17,6 +17,7 @@ let snapshotRunning = false;
 const kebabSnap = '-snap.png';
 const dotSnap = '.snap.png';
 const dotDiff = '.diff.png';
+const dotActual = '.actual.png';
 
 export const cachePath = path.join(
   pkgDir.sync(process.cwd()),
@@ -94,6 +95,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     ? path.join(process.cwd(), customDiffDir, relativePath)
     : path.join(snapshotsDir, '__diff_output__');
   const diffDotPath = path.join(diffDir, `${snapshotIdentifier}${dotDiff}`);
+  const actualDotPath = path.join(diffDir, `${snapshotIdentifier}${dotActual}`);
 
   if (fs.pathExistsSync(snapshotDotPath)) {
     fs.copySync(snapshotDotPath, snapshotKebabPath);
@@ -117,6 +119,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     fs.removeSync(diffOutputPath);
     fs.removeSync(snapshotKebabPath);
     snapshotResult.diffOutputPath = diffDotPath;
+    fs.writeFileSync(actualDotPath, receivedImageBuffer);
 
     return {
       path: diffDotPath,

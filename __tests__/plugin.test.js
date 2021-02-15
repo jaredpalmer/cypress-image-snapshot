@@ -21,6 +21,7 @@ jest.mock('fs-extra', () => ({
   pathExistsSync: () => false,
   copySync: () => null,
   removeSync: () => null,
+  writeFileSync: () => null,
 }));
 
 describe('plugin', () => {
