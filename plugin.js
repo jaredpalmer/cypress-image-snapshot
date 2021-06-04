@@ -130,11 +130,10 @@ function matchImageSnapshotPlugin({ path: screenshotPath }) {
   const receivedImageBuffer = _fsExtra2.default.readFileSync(screenshotPath);
   _fsExtra2.default.removeSync(screenshotPath);
 
-  let { dir: screenshotDir, name: snapshotIdentifier } = _path2.default.parse(
-    screenshotPath
-  );
+  const { dir: screenshotDir, name } = _path2.default.parse(screenshotPath);
 
-  snapshotIdentifier = snapshotIdentifier.split(' ')[0];
+  // remove the cypress v5+ native retries suffix from the file name
+  const snapshotIdentifier = name.replace(/ \(attempt [0-9]+\)/, '');
 
   const relativePath = _path2.default.relative(
     screenshotsFolder,
