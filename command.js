@@ -1,3 +1,22 @@
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true,
+});
+
+var _extends =
+  Object.assign ||
+  function(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
 /**
  * Copyright (c) 2018-present The Palmer Group
  *
@@ -5,21 +24,25 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { MATCH, RECORD } from './constants';
+exports.matchImageSnapshotCommand = matchImageSnapshotCommand;
+exports.addMatchImageSnapshotCommand = addMatchImageSnapshotCommand;
+
+var _constants = require('./constants');
 
 const screenshotsFolder = Cypress.config('screenshotsFolder');
 const updateSnapshots = Cypress.env('updateSnapshots') || false;
 const failOnSnapshotDiff =
   typeof Cypress.env('failOnSnapshotDiff') === 'undefined';
 
-export function matchImageSnapshotCommand(defaultOptions) {
+function matchImageSnapshotCommand(defaultOptions) {
   return function matchImageSnapshot(subject, maybeName, commandOptions) {
-    const options = {
-      ...defaultOptions,
-      ...((typeof maybeName === 'string' ? commandOptions : maybeName) || {}),
-    };
+    const options = _extends(
+      {},
+      defaultOptions,
+      (typeof maybeName === 'string' ? commandOptions : maybeName) || {}
+    );
 
-    cy.task(MATCH, {
+    cy.task(_constants.MATCH, {
       screenshotsFolder,
       updateSnapshots,
       options,
@@ -30,7 +53,7 @@ export function matchImageSnapshotCommand(defaultOptions) {
     target.screenshot(name, options);
 
     return cy
-      .task(RECORD)
+      .task(_constants.RECORD)
       .then(
         ({
           pass,
@@ -44,10 +67,9 @@ export function matchImageSnapshotCommand(defaultOptions) {
         }) => {
           if (!pass && !added && !updated) {
             if (commandOptions.retryCounter > 0) {
-              const newCommandOptions = {
-                ...commandOptions,
+              const newCommandOptions = _extends({}, commandOptions, {
                 retryCounter: commandOptions.retryCounter - 1,
-              };
+              });
               cy.wait(newCommandOptions.retryWaitingTime || 100);
               return matchImageSnapshot(subject, maybeName, newCommandOptions);
             }
@@ -73,7 +95,7 @@ export function matchImageSnapshotCommand(defaultOptions) {
   };
 }
 
-export function addMatchImageSnapshotCommand(
+function addMatchImageSnapshotCommand(
   maybeName = 'matchImageSnapshot',
   maybeOptions
 ) {

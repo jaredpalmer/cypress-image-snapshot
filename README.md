@@ -1,6 +1,5 @@
 # Cypress Image Snapshot
 
-
 Cypress Image Snapshot binds [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot)'s image diffing logic to [Cypress.io](https://cypress.io) commands. **The goal is to catch visual regressions during integration tests.**
 
 [![Discord](https://img.shields.io/discord/769256827007139912?label=%F0%9F%92%AC%20%20join%20us%20on%20discord&style=plastic)](https://discord.com/invite/RevdZTYMzr)
@@ -163,6 +162,10 @@ or add the following to your `cypress.json`
 
 - `customSnapshotsDir` : Path to the directory that snapshot images will be written to, defaults to `<rootDir>/cypress/snapshots`.
 - `customDiffDir`: Path to the directory that diff images will be written to, defaults to a sibling `__diff_output__` directory alongside each snapshot.
+
+- `retryCounter` : Retry up to n times before raising a failer. The process will wait for 100 be defualt millisecond betwen each iteration.
+
+- `retryWaitingTime` : For each trying, the process will wait for this time and the defualt is 100 millisecond.
 
 Additionally, any options for [`cy.screenshot()`](https://docs.cypress.io/api/commands/screenshot.html#Arguments) and [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot#optional-configuration) can be passed in the `options` argument to `addMatchImageSnapshotCommand` and `cy.matchImageSnapshot()`. The local options in `cy.matchImageSnapshot()` will overwrite the default options set in `addMatchImageSnapshot`.
 
