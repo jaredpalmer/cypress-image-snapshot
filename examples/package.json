@@ -18,7 +18,7 @@
     "examples": "concurrently \"npm run start\" \"npm run cypress:run -- --reporter cypress-image-snapshot/reporter\""
   },
   "devDependencies": {
-    "cypress": "^3.1.4",
-    "cypress-image-snapshot": "^3.0.0"
+    "cypress": "^7.7.0",
+    "cypress-image-snapshot": "^5.0.0"
   }
 }
