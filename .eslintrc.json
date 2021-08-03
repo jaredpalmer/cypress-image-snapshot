@@ -1,11 +1,7 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true,
-        "node": true
-    },
     "extends": [
-        "eslint:recommended"
+      "airbnb-base",
+      "prettier"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -15,7 +11,7 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+      "cypress"
     ],
     "rules": {
     },
@@ -23,5 +19,8 @@
         "react": {
             "version": "detect"
         }
+    },
+    "env": {
+      "cypress/globals": true
     }
 }
