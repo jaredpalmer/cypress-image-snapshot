@@ -1,0 +1,16 @@
+name: automerge
+on:
+  check_suite:
+    types:
+      - completed
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: automerge
+        uses: "pascalgn/automerge-action@v0.14.2"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "dependencies,!wip,!work in progress"
+          MERGE_METHOD: "rebase"
+          UPDATE_METHOD: "rebase"

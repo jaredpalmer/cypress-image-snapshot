@@ -1,0 +1,26 @@
+{
+    "extends": [
+      "airbnb-base",
+      "prettier"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+      "cypress"
+    ],
+    "rules": {
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "env": {
+      "cypress/globals": true
+    }
+}
