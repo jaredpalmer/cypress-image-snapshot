@@ -1,5 +1,5 @@
 {
-  "name": "cypress-image-snapshot",
+  "name": "cypress-image-snapshot-fork",
   "version": "4.0.1",
   "description": "Cypress bindings for jest-image-snapshot.",
   "repository": "https://github.com/palmerhq/cypress-image-snapshot",
@@ -46,7 +46,7 @@
     "rimraf": "^2.6.2"
   },
   "peerDependencies": {
-    "cypress": "^4.5.0"
+    "cypress": ">=4.5.0"
   },
   "husky": {
     "hooks": {
