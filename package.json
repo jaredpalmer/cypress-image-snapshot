@@ -9,7 +9,7 @@
     "*.js"
   ],
   "engines": {
-    "node": ">=8"
+    "node": ">=14"
   },
   "scripts": {
     "prebuild": "rimraf *.js",
