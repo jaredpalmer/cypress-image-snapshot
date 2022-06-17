@@ -3400,7 +3400,7 @@ jest-haste-map@^23.6.0:
     micromatch "^2.3.11"
     sane "^2.0.0"
 
-jest-image-snapshot@^5.2.0:
+jest-image-snapshot@5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/jest-image-snapshot/-/jest-image-snapshot-5.0.0.tgz#17e964f1fa6e874b3f770a94d83ff5416dd2bd95"
   integrity sha512-qbmNhe3L5a4jAJ2RqqNhh6DZnV4GBKvN7ooaKSgSAA01AdzBvrsWhf7vScZq3ELdyO9XJtD0X4/KZ2Slr6LRCg==
