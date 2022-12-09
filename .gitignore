@@ -2,3 +2,12 @@ node_modules
 /*.js
 
 .DS_Store
+
+# JetBrains IDE
+.idea/
+
+# VS Code editor
+.vscode/
+
+# dont safe snapshot differ file
+__diff_output__

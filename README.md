@@ -193,3 +193,4 @@ Cypress's screenshot functionality has changed significantly across `3.x.x` vers
 
 - `cypress-image-snapshot@>=1.0.0 <2.0.0` for `cypress@>=3.0.0 <3.0.2`
 - `cypress-image-snapshot@>2.0.0` for `cypress@>3.0.2`.
+- `cypress-image-snapshot@>5.0.0` for `cypress@>10.0.0`.
