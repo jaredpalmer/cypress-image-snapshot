@@ -13,9 +13,11 @@ function reporter(runner) {
   runner.on('end', () => {
     const cache = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
     if (cache.length) {
+      // eslint-disable-next-line no-console
       console.log(chalk.red(`\n  (${chalk.underline.bold('Snapshot Diffs')})`));
 
       cache.forEach(({ diffRatio, diffPixelCount, diffOutputPath }) => {
+        // eslint-disable-next-line no-console
         console.log(
           `\n  - ${diffOutputPath}\n    Screenshot was ${diffRatio *
             100}% different from saved snapshot with ${diffPixelCount} different pixels.\n`
