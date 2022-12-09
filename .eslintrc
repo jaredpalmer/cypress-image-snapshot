@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "airbnb-base",
+    "prettier"
+  ],
+  "plugins": [
+    "cypress"
+  ],
+  "rules": {
+    "class-methods-use-this": "off",
+    "default-param-last": "off",
+    "import/no-import-module-exports": ["error", {
+      "exceptions": ["**/*/reporter.js"]
+    }]
+  },
+  "env": {
+    "cypress/globals": true
+  }
+}
