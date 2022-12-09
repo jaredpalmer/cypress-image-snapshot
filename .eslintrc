@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "airbnb-base",
+    "prettier"
+  ],
+  "plugins": [
+    "cypress"
+  ],
+  "rules": {
+    "class-methods-use-this": "off"
+  },
+  "env": {
+    "cypress/globals": true
+  }
+}
